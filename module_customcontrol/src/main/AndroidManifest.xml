@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.czm.module.customcontrol">
+
+    <application android:theme="@style/AppTheme">
+        <activity
+            android:name=".CustomControlLearnActivity"
+            android:label="@string/title_activity_custom_control_learn"
+            android:theme="@style/AppTheme.NoActionBar"/>
+    </application>
+
+</manifest>

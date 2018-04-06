@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_main">组件main</string>
+
+    <string name="app_exit_hint">再按一次退出程序</string>
+    <string name="title_activity_fragment_module">Fragment组件化</string>
+    <string name="title_home">主页</string>
+    <string name="title_device">设备</string>
+    <string name="title_me">我</string>
+    <string name="title_notifications">消息</string>
+</resources>

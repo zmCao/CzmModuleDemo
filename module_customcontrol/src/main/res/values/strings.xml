@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">组件自定义控件</string>
+    <string name="title_activity_custom_control_learn">自定义控件学习</string>
+    <string name="app_exit_hint">再按一次退出程序</string>
+</resources>
