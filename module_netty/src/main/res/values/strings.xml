@@ -1,4 +1,4 @@
 <resources>
-    <string name="app_name">module_greendao</string>
+    <string name="app_name">module_netty</string>
     <string name="app_exit_hint">再按一次退出程序</string>
 </resources>

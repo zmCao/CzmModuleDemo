@@ -75,7 +75,6 @@ android {
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation deps.support.multidex
     implementation project(':base_common')
     if (!isModule.toBoolean()) {
         implementation project(':module_main')

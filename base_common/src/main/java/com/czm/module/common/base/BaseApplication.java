@@ -1,6 +1,8 @@
 package com.czm.module.common.base;
 
 import android.app.Application;
+import android.content.Context;
+import android.support.multidex.MultiDex;
 
 import com.czm.module.common.utils.Utils;
 import com.orhanobut.logger.AndroidLogAdapter;
@@ -58,5 +60,11 @@ public class BaseApplication extends Application {
     @Override
     public void onTrimMemory(int level) {
         super.onTrimMemory(level);
+    }
+    @Override
+    protected void attachBaseContext(Context base) {
+        super.attachBaseContext(base);
+        // dex突破65535的限制
+        MultiDex.install(this);
     }
 }
