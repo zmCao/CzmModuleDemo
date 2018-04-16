@@ -66,9 +66,11 @@ dependencies {
     api deps.material_dialog
     api deps.logger
     api deps.toasty
-
+    //greendao
+    api deps.greendao
     //router
     api deps.arouter_api
+    api deps.netty_all
 
     //annotationProcessor
     annotationProcessor deps.dagger.android_support_compiler

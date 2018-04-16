@@ -1,0 +1,8 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.czm.module.netty" >
+    <application android:theme="@style/AppTheme">
+        <activity
+            android:name="debug.LauncherActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+    </application>
+</manifest>

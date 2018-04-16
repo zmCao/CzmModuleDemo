@@ -82,5 +82,6 @@ dependencies {
         implementation project(':module_customcontrol')
         implementation project(':module_home')
         implementation project(':module_greendao')
+        implementation project(':module_netty')
     }
 }

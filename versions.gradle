@@ -31,6 +31,9 @@ versions.toasty = "1.1.3"
 versions.logger = "2.2.0"
 versions.material_dialog = "0.9.6.0"
 versions.systembartint="1.0.3"
+versions.greendao="3.2.2"
+versions.greendao_gradle_plugin="3.2.2"
+versions.netty_all="5.0.0.Alpha2"
 //Arouter
 versions.arouter_compiler = "1.1.4"
 versions.arouter_api = "1.3.1"
@@ -101,6 +104,10 @@ deps.logger = "com.orhanobut:logger:$versions.logger"
 deps.arouter_api = "com.alibaba:arouter-api:$versions.arouter_api"
 deps.arouter_compiler = "com.alibaba:arouter-compiler:$versions.arouter_compiler"
 deps.systembartint="com.readystatesoftware.systembartint:systembartint:$versions.systembartint"
+//greendao
+deps.greendao_gradle_plugin="org.greenrobot:greendao-gradle-plugin:$versions.greendao_gradle_plugin"
+deps.greendao="org.greenrobot:greendao:$versions.greendao"
+deps.netty_all="io.netty:netty-all:$versions.netty_all"
 ext.deps = deps
 
 def build_versions = [:]
