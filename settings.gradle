@@ -1,4 +1,4 @@
-include ':app', ':module_greendao', ':module_netty',
+include ':app', ':module_greendao', ':module_netty', ':module_other',
         ':base_common',
         ':module_main',
         ':module_customcontrol',

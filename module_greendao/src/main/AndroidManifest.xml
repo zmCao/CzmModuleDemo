@@ -2,8 +2,6 @@
     package="com.czm.module.greendao">
 
     <application android:theme="@style/AppTheme">
-        <activity
-            android:name="debug.LauncherActivity"
-            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".GreenDaoLearnActivity" />
     </application>
 </manifest>

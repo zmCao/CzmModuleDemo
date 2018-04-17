@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">module_other</string>
+    <string name="app_exit_hint">再按一次退出程序</string>
+</resources>

@@ -50,6 +50,4 @@ dependencies {
     implementation 'com.android.support.constraint:constraint-layout:1.0.2'
     annotationProcessor deps.arouter_compiler
     implementation project(':base_common')
-
-    implementation 'org.msgpack:msgpack:0.6.12'
 }

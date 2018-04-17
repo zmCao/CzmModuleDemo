@@ -2,7 +2,7 @@
     package="com.czm.module.netty" >
     <application android:theme="@style/AppTheme">
         <activity
-            android:name="debug.LauncherActivity"
+            android:name=".NettyLearnActivity"
             android:theme="@style/AppTheme.NoActionBar" />
     </application>
 </manifest>

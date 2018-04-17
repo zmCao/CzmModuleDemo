@@ -15,8 +15,10 @@ public class  MainActivity extends BaseActivity {
         Button btnCustomControlDemo = findViewById(R.id.btnCustomControlDemo);
         btnCustomControlDemo.setOnClickListener(v -> ARouter.getInstance().build("/customcontrol/CustomControlLearnActivity").navigation());
         Button btnGreenDaoDemo=findViewById(R.id.btnGreenDaoDemo);
-        btnGreenDaoDemo.setOnClickListener(v -> ARouter.getInstance().build("/customcontrol/CustomControlLearnActivity").navigation());
+        btnGreenDaoDemo.setOnClickListener(v -> ARouter.getInstance().build("/GreenDao/GreenDaoLearnActivity").navigation());
         Button btnNetty=findViewById(R.id.btnNetty);
         btnNetty.setOnClickListener(v -> ARouter.getInstance().build("/netty/NettyLearnActivity").navigation());
+        Button btnOther=findViewById(R.id.btnOther);
+        btnOther.setOnClickListener(v -> ARouter.getInstance().build("/other/OtherLearnActivity").navigation());
     }
 }

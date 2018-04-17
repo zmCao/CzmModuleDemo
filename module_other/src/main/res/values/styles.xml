@@ -1,0 +1,8 @@
+<resources>
+    <!--启动页样式及窗口背景-->
+    <style name="SplashTheme" parent="AppTheme">
+        <item name="android:windowBackground">@drawable/bg_loading</item>
+        <item name="android:windowFullscreen">true</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+</resources>

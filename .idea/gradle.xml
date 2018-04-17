@@ -15,6 +15,7 @@
             <option value="$PROJECT_DIR$/module_home" />
             <option value="$PROJECT_DIR$/module_main" />
             <option value="$PROJECT_DIR$/module_netty" />
+            <option value="$PROJECT_DIR$/module_other" />
           </set>
         </option>
         <option name="resolveModulePerSourceSet" value="false" />
