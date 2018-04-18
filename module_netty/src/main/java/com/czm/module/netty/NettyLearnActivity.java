@@ -1,8 +1,10 @@
 package com.czm.module.netty;
 
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.KeyEvent;
+import android.widget.Button;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.czm.module.common.base.BaseActivity;
@@ -23,24 +25,12 @@ public class NettyLearnActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_netty_learn);
-        //启动netty Server
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                new HelloServer().run();
-            }
-        }).start();
-        new Thread(() -> {
-            //启动netty Client
-            new Handler().postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    new HelloClient().run();
-                }
-            },5000);
-        }).start();
-
+        Button btn_open_server = findViewById(R.id.btn_open_server);
+        btn_open_server.setOnClickListener(v -> gotoActivity(OpenServerActivity.class));
+        Button btn_open_client = findViewById(R.id.btn_open_client);
+        btn_open_client.setOnClickListener(v -> gotoActivity(OpenClientActivity.class));
     }
+
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK && event.getAction() == KeyEvent.ACTION_DOWN) {

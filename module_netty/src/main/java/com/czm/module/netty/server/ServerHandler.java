@@ -2,6 +2,8 @@ package com.czm.module.netty.server;
 
 import com.orhanobut.logger.Logger;
 
+import org.greenrobot.eventbus.EventBus;
+
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
 import io.netty.channel.group.ChannelGroup;
@@ -34,8 +36,8 @@ public class ServerHandler extends ChannelInboundHandlerAdapter {
 
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) {
-
-        Logger.d(msg);
+        Logger.d("ServerHandler read Message:" + msg);
+        EventBus.getDefault().post(msg.toString());
     }
 
     @Override

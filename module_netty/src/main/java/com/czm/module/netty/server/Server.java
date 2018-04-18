@@ -4,6 +4,7 @@ import com.czm.module.netty.decoder.MsgPackDecoder;
 import com.czm.module.netty.decoder.MsgpackEncoder;
 
 import io.netty.bootstrap.ServerBootstrap;
+import io.netty.channel.Channel;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelOption;
@@ -24,7 +25,7 @@ import io.netty.handler.logging.LoggingHandler;
 public class Server {
 
     private int port;
-
+    private Channel mChannerl;
     public Server(int port) {
         this.port = port;
     }
@@ -71,9 +72,10 @@ public class Server {
             b.channel(NioServerSocketChannel.class);
             //绑定端口，开始接收进来的连接
             ChannelFuture f = b.bind(port).sync();
-
+            mChannerl=f.channel();
             //等待服务器 socket关闭
             f.channel().closeFuture().sync();
+
         } catch (InterruptedException e) {
             e.printStackTrace();
         } finally {
@@ -81,5 +83,9 @@ public class Server {
             bossGroup.shutdownGracefully();
             //Context.springContext.close();
         }
+    }
+
+    public Channel getmChannerl() {
+        return mChannerl;
     }
 }

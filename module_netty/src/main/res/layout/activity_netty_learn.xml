@@ -4,5 +4,14 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
-
+    <Button
+        android:id="@+id/btn_open_server"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="打开服务端"/>
+    <Button
+        android:id="@+id/btn_open_client"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="打开客户端"/>
 </LinearLayout>

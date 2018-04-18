@@ -4,6 +4,7 @@ import com.czm.module.netty.decoder.MsgPackDecoder;
 import com.czm.module.netty.decoder.MsgpackEncoder;
 
 import io.netty.bootstrap.Bootstrap;
+import io.netty.channel.Channel;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelOption;
@@ -21,11 +22,9 @@ import io.netty.handler.codec.LengthFieldPrepender;
  * @Description
  */
 public class TimeClient {
-    public static int index = 0;
-    private int id;
+    private Channel mChannerl;
+    public TimeClient() {
 
-    public TimeClient(int id) {
-        this.id = id;
     }
     public void run() {
         String host = "192.168.1.226";
@@ -47,21 +46,22 @@ public class TimeClient {
                     //在ByteBuf之前增加2个字节的消息长度字段
                     ch.pipeline().addLast("frameEncoder",new LengthFieldPrepender(2));
                     ch.pipeline().addLast("msgpack encoder",new MsgpackEncoder());
-
-//                    ch.pipeline().addLast("uhome decoder", new UHomeProtocolDecoder());
-//                    ch.pipeline().addLast("uhome encoder", new UHomeProtocolEncoder());
-                    ch.pipeline().addLast(new TimeClientHandler(id));
+                    ch.pipeline().addLast(new TimeClientHandler());
                 }
             });
 
             // 启动客户端
             ChannelFuture f = b.connect(host, port).sync();
+            mChannerl=f.channel();
             // 等待连接关闭
-            f.channel().closeFuture().sync();
+            mChannerl.closeFuture().sync();
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
             workerGroup.shutdownGracefully();
         }
+    }
+    public Channel getmChannerl() {
+        return mChannerl;
     }
 }

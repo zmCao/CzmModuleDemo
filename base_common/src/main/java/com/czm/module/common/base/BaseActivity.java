@@ -72,6 +72,24 @@ public abstract class BaseActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Setup the toolbar.
+     *
+     * @param toolbar toolbar
+     * @param sTitle  是否隐藏Title
+     */
+    protected void setupToolBar(Toolbar toolbar, String sTitle) {
+        setSupportActionBar(toolbar);
+        ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.setHomeAsUpIndicator(R.drawable.ic_arrow_back);
+            actionBar.setDisplayHomeAsUpEnabled(true);
+            actionBar.setDisplayShowHomeEnabled(true);
+            //显示Title
+            actionBar.setDisplayShowTitleEnabled(true);
+            actionBar.setTitle(sTitle);
+        }
+    }
 
     /**
      * 添加fragment
@@ -91,6 +109,7 @@ public abstract class BaseActivity extends AppCompatActivity {
 
     /**
      * 替换fragment
+     *
      * @param fragment
      * @param frameId
      */
@@ -106,6 +125,7 @@ public abstract class BaseActivity extends AppCompatActivity {
 
     /**
      * 隐藏fragment
+     *
      * @param fragment
      */
     protected void hideFragment(BaseFragment fragment) {
@@ -119,6 +139,7 @@ public abstract class BaseActivity extends AppCompatActivity {
 
     /**
      * 显示fragment
+     *
      * @param fragment
      */
     protected void showFragment(BaseFragment fragment) {
@@ -132,6 +153,7 @@ public abstract class BaseActivity extends AppCompatActivity {
 
     /**
      * 移除fragment
+     *
      * @param fragment
      */
     protected void removeFragment(BaseFragment fragment) {
@@ -153,6 +175,7 @@ public abstract class BaseActivity extends AppCompatActivity {
             finish();
         }
     }
+
     /**
      * 打开个新的activity,不需要判断是否登录
      *
