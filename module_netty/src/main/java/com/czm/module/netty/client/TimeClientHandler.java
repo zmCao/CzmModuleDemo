@@ -10,7 +10,7 @@ import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
 
 /**
- * Created by Cloud on 2017/9/19.
+ * Created by czm on 2017/9/19.
  *
  * @Description
  */
@@ -19,12 +19,14 @@ public class TimeClientHandler extends ChannelInboundHandlerAdapter {
     }
 
     @Override
-    public void channelActive(ChannelHandlerContext ctx){
+    public void channelActive(ChannelHandlerContext ctx) {
         Logger.e("ClientHandler Active");
+        EventBus.getDefault().post("与服务端连接成功");
     }
 
     @Override
-    public void channelRead(ChannelHandlerContext ctx, Object msg) {
+    public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
+        super.channelRead(ctx, msg);
         Logger.e("ClientHandler read Message:" + msg);
         EventBus.getDefault().post(msg.toString());
     }

@@ -11,10 +11,6 @@ import com.czm.module.common.base.BaseActivity;
 import com.czm.module.common.base.ViewManager;
 import com.czm.module.common.utils.ToastUtils;
 import com.czm.module.common.utils.Utils;
-import com.czm.module.netty.client.HelloClient;
-import com.czm.module.netty.client.TimeClient;
-import com.czm.module.netty.server.HelloServer;
-import com.czm.module.netty.server.Server;
 
 @Route(path = "/netty/NettyLearnActivity")
 public class NettyLearnActivity extends BaseActivity {

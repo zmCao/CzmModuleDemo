@@ -20,7 +20,7 @@
         </activity>
         <activity android:name=".NettyLearnActivity" />
         <activity android:name=".OpenServerActivity" />
-        <activity android:name=".OpenClientActivity"></activity>
+        <activity android:name=".OpenClientActivity" />
     </application>
 
 </manifest>

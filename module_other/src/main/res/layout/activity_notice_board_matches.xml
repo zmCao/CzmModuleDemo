@@ -5,8 +5,16 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context=".NoticeBoardMatchesActivity">
-<Button
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:text="发送聊天消息"/>
+
+    <Button
+        android:id="@+id/btnSendChartMsg"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="发送聊天消息" />
+
+    <Button
+        android:id="@+id/btnSendSubscribeMsg"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="发送订阅消息" />
 </LinearLayout>

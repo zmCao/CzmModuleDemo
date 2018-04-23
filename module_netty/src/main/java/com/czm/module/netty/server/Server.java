@@ -1,9 +1,14 @@
 package com.czm.module.netty.server;
 
+import android.util.Log;
+
 import com.czm.module.netty.decoder.MsgPackDecoder;
 import com.czm.module.netty.decoder.MsgpackEncoder;
+import com.orhanobut.logger.Logger;
 
 import io.netty.bootstrap.ServerBootstrap;
+import io.netty.buffer.ByteBuf;
+import io.netty.buffer.Unpooled;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelInitializer;
@@ -16,6 +21,8 @@ import io.netty.handler.codec.LengthFieldBasedFrameDecoder;
 import io.netty.handler.codec.LengthFieldPrepender;
 import io.netty.handler.logging.LogLevel;
 import io.netty.handler.logging.LoggingHandler;
+import io.netty.util.concurrent.Future;
+import io.netty.util.concurrent.FutureListener;
 
 /**
  * Created by Cloud on 2017/9/19.
@@ -23,9 +30,10 @@ import io.netty.handler.logging.LoggingHandler;
  * @Description
  */
 public class Server {
-
+    private final String TAG = Server.class.getName();
     private int port;
     private Channel mChannerl;
+
     public Server(int port) {
         this.port = port;
     }
@@ -55,24 +63,25 @@ public class Server {
                     //指定日志级别
                     .handler(new LoggingHandler(LogLevel.DEBUG))
                     //使用childHandler绑定具体的事件处理器
-                    .childHandler(new ChannelInitializer<SocketChannel>() {
-                        @Override
-                        protected void initChannel(SocketChannel ch) {
-                            //LengthFieldBasedFrameDecoder用于处理半包消息
-                            //这样后面的MsgpackDecoder接收的永远是整包消息
-                            ch.pipeline().addLast("frameDecoder", new LengthFieldBasedFrameDecoder(65535, 0, 2, 0, 2));
-                            ch.pipeline().addLast("msgpack decoder", new MsgPackDecoder());
-                            //在ByteBuf之前增加2个字节的消息长度字段
-                            ch.pipeline().addLast("frameEncoder", new LengthFieldPrepender(2));
-                            ch.pipeline().addLast("msgpack encoder", new MsgpackEncoder());
-
-                            ch.pipeline().addLast(new ServerHandler());
-                        }
-                    });
+                    .childHandler(new ServerInitializer());
+//                    .childHandler(new ChannelInitializer<SocketChannel>() {
+//                        @Override
+//                        protected void initChannel(SocketChannel ch) {
+//                            //LengthFieldBasedFrameDecoder用于处理半包消息
+//                            //这样后面的MsgpackDecoder接收的永远是整包消息
+//                            ch.pipeline().addLast("frameDecoder", new LengthFieldBasedFrameDecoder(65535, 0, 2, 0, 2));
+//                            ch.pipeline().addLast("msgpack decoder", new MsgPackDecoder());
+//                            //在ByteBuf之前增加2个字节的消息长度字段
+//                            ch.pipeline().addLast("frameEncoder", new LengthFieldPrepender(2));
+//                            ch.pipeline().addLast("msgpack encoder", new MsgpackEncoder());
+//
+//                            ch.pipeline().addLast(new ServerHandler());
+//                        }
+//                    });
             b.channel(NioServerSocketChannel.class);
             //绑定端口，开始接收进来的连接
             ChannelFuture f = b.bind(port).sync();
-            mChannerl=f.channel();
+            mChannerl = f.channel();
             //等待服务器 socket关闭
             f.channel().closeFuture().sync();
 
@@ -87,5 +96,22 @@ public class Server {
 
     public Channel getmChannerl() {
         return mChannerl;
+    }
+
+    /**
+     * 发送消息
+     *
+     * @param sMsg 发送消息字符串
+     */
+    public void sendMessage(String sMsg) {
+        boolean flag = mChannerl != null;
+        if (!flag) {
+            Logger.e(TAG, "------尚未连接");
+            return;
+        }
+        byte[] req = sMsg.getBytes();
+        ByteBuf sMessage = Unpooled.buffer(req.length);
+        sMessage.writeBytes(req);
+        mChannerl.writeAndFlush(sMsg);
     }
 }

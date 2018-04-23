@@ -13,7 +13,7 @@ import io.netty.util.concurrent.GlobalEventExecutor;
 /**
  * Description:
  *
- * @author: Cloud
+ * @author: czm
  * Date: 2018-04-04
  * Time: 10:13
  */
@@ -24,7 +24,7 @@ public class ServerHandler extends ChannelInboundHandlerAdapter {
     @Override
     public void channelActive(ChannelHandlerContext ctx) {
         group.add(ctx.channel());
-
+        ctx.writeAndFlush("收到了你的连接");
     }
 
     @Override
