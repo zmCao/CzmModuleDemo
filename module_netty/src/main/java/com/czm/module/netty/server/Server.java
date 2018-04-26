@@ -11,6 +11,7 @@ import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelFuture;
+import io.netty.channel.ChannelId;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelOption;
 import io.netty.channel.EventLoopGroup;
@@ -81,7 +82,7 @@ public class Server {
             b.channel(NioServerSocketChannel.class);
             //绑定端口，开始接收进来的连接
             ChannelFuture f = b.bind(port).sync();
-            mChannerl = f.channel();
+//            mChannerl = f.channel();
             //等待服务器 socket关闭
             f.channel().closeFuture().sync();
 
@@ -104,14 +105,16 @@ public class Server {
      * @param sMsg 发送消息字符串
      */
     public void sendMessage(String sMsg) {
-        boolean flag = mChannerl != null;
-        if (!flag) {
-            Logger.e(TAG, "------尚未连接");
-            return;
-        }
-        byte[] req = sMsg.getBytes();
-        ByteBuf sMessage = Unpooled.buffer(req.length);
-        sMessage.writeBytes(req);
-        mChannerl.writeAndFlush(sMsg);
+//        ServerHandler.group.find()
+        ServerHandler.group.writeAndFlush(sMsg);
+//        boolean flag = mChannerl != null;
+//        if (!flag) {
+//            Logger.e(TAG, "------尚未连接");
+//            return;
+//        }
+////        byte[] req = sMsg.getBytes();
+////        ByteBuf sMessage = Unpooled.buffer(req.length);
+////        sMessage.writeBytes(req);
+//        mChannerl.writeAndFlush(sMsg);
     }
 }

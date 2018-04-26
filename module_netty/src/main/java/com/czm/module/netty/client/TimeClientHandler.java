@@ -21,7 +21,7 @@ public class TimeClientHandler extends ChannelInboundHandlerAdapter {
     @Override
     public void channelActive(ChannelHandlerContext ctx) {
         Logger.e("ClientHandler Active");
-        EventBus.getDefault().post("与服务端连接成功");
+        ctx.writeAndFlush("我是客户端，你好");
     }
 
     @Override

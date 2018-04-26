@@ -20,6 +20,7 @@ public class OtherLearnActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_other_learn);
         Button btn_notice_board_matches=findViewById(R.id.btn_notice_board_matches);
+//        Button btn_notice_board_matches=null;
         btn_notice_board_matches.setOnClickListener(v -> gotoActivity(NoticeBoardMatchesActivity.class));
     }
 

@@ -12,15 +12,12 @@ import io.netty.util.concurrent.GlobalEventExecutor;
 
 /**
  * Description:
- *
- * @author: czm
  * Date: 2018-04-04
  * Time: 10:13
  */
 public class ServerHandler extends ChannelInboundHandlerAdapter {
 
     public static ChannelGroup group = new DefaultChannelGroup(GlobalEventExecutor.INSTANCE);
-
     @Override
     public void channelActive(ChannelHandlerContext ctx) {
         group.add(ctx.channel());
@@ -50,6 +47,11 @@ public class ServerHandler extends ChannelInboundHandlerAdapter {
         group.remove(ctx.channel());
         ctx.close();
 
+    }
+
+    @Override
+    public void channelWritabilityChanged(ChannelHandlerContext ctx) throws Exception {
+        super.channelWritabilityChanged(ctx);
     }
 }
 
