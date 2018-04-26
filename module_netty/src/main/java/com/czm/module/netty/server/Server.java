@@ -1,5 +1,6 @@
 package com.czm.module.netty.server;
 
+import android.app.Service;
 import android.util.Log;
 
 import com.czm.module.netty.decoder.MsgPackDecoder;
@@ -30,7 +31,7 @@ import io.netty.util.concurrent.FutureListener;
  *
  * @Description
  */
-public class Server {
+public class Server{
     private final String TAG = Server.class.getName();
     private int port;
     private Channel mChannerl;
@@ -38,6 +39,7 @@ public class Server {
     private EventLoopGroup bossGroup = null;
     //第二个线程组用于实际的业务处理
     private EventLoopGroup workerGroup = null;
+
     public Server(int port) {
         this.port = port;
     }
@@ -95,15 +97,17 @@ public class Server {
     public Channel getmChannerl() {
         return mChannerl;
     }
-    public void destroy()
-    {
+
+    public void destroy() {
         workerGroup.shutdownGracefully();
         bossGroup.shutdownGracefully();
     }
+
     /**
      * 发送消息
      *
-     * @param sMsg 发送消息字符串
+     * @param
+     * sMsg 发送消息字符串
      */
     public void sendMessage(String sMsg) {
 //        ServerHandler.group.find()
