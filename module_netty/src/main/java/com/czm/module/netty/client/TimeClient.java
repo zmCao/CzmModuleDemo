@@ -25,8 +25,9 @@ import io.netty.handler.codec.LengthFieldPrepender;
  * @Description
  */
 public class TimeClient {
-    private final String TAG=TimeClient.class.getName();
+    private final String TAG = TimeClient.class.getName();
     private Channel mChannerl;
+    private EventLoopGroup workerGroup = null;
 
     public TimeClient() {
 
@@ -35,7 +36,7 @@ public class TimeClient {
     public void run() {
         String host = "192.168.1.226";
         int port = 8085;
-        EventLoopGroup workerGroup = new NioEventLoopGroup();
+        workerGroup = new NioEventLoopGroup();
 
         try {
             Bootstrap b = new Bootstrap(); // (1)
@@ -72,6 +73,10 @@ public class TimeClient {
 
     public Channel getmChannerl() {
         return mChannerl;
+    }
+
+    public void destroy() {
+        workerGroup.shutdownGracefully();
     }
 
     /**

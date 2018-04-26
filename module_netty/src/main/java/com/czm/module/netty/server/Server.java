@@ -34,18 +34,15 @@ public class Server {
     private final String TAG = Server.class.getName();
     private int port;
     private Channel mChannerl;
-
+    //第一个线程组用于接收client连接
+    private EventLoopGroup bossGroup = null;
+    //第二个线程组用于实际的业务处理
+    private EventLoopGroup workerGroup = null;
     public Server(int port) {
         this.port = port;
     }
 
     public void run() {
-
-        //第一个线程组用于接收client连接
-        EventLoopGroup bossGroup = null;
-        //第二个线程组用于实际的业务处理
-        EventLoopGroup workerGroup = null;
-
         bossGroup = new NioEventLoopGroup();
         workerGroup = new NioEventLoopGroup();
 
@@ -98,7 +95,11 @@ public class Server {
     public Channel getmChannerl() {
         return mChannerl;
     }
-
+    public void destroy()
+    {
+        workerGroup.shutdownGracefully();
+        bossGroup.shutdownGracefully();
+    }
     /**
      * 发送消息
      *

@@ -46,5 +46,6 @@ public class OpenServerActivity extends BaseActivity {
     protected void onDestroy() {
         super.onDestroy();
         EventBus.getDefault().unregister(this);
+        mNettyServer.destroy();
     }
 }
