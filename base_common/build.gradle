@@ -69,6 +69,8 @@ dependencies {
     api deps.toasty
     //greendao
     api deps.greendao
+    //数据库加密
+    api deps.android_database_sqlcipher
     //router
     api deps.arouter_api
     api deps.netty_all

@@ -51,7 +51,6 @@ public abstract class BaseActivity extends AppCompatActivity {
         return true;
     }
 
-
     /**
      * Setup the toolbar.
      *

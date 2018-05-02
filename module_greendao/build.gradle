@@ -1,5 +1,6 @@
 if (isModule.toBoolean()) {
     apply plugin: 'com.android.application'
+    apply plugin: 'org.greenrobot.greendao'
 } else {
     apply plugin: 'com.android.library'
 }
@@ -44,6 +45,11 @@ android {
         release {
             minifyEnabled false
         }
+    }
+    greendao {
+        schemaVersion 1 //数据库版本号
+        daoPackage 'com.czm.module.greendao.db'// 设置DaoMaster、DaoSession、Dao 包名
+        targetGenDir 'src/main/java'//设置DaoMaster、DaoSession、Dao目录
     }
 }
 

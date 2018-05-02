@@ -1,7 +1,13 @@
 package debug;
 
 
+import android.database.sqlite.SQLiteDatabase;
+
 import com.czm.module.common.base.BaseApplication;
+import com.czm.module.greendao.db.DaoMaster;
+import com.czm.module.greendao.db.DaoSession;
+
+import java.sql.SQLDataException;
 
 /**
  * <p>类说明</p>
@@ -12,10 +18,14 @@ import com.czm.module.common.base.BaseApplication;
  */
 public class GreenDaoApplication extends BaseApplication {
 
+    private DaoSession daoSession;
+    private SQLiteDatabase sqLiteDatabase;
+
     @Override
     public void onCreate() {
         super.onCreate();
         login();
+        initGreenDao();
     }
 
     /**
@@ -24,5 +34,20 @@ public class GreenDaoApplication extends BaseApplication {
      */
     private void login() {
 
+    }
+
+    private void initGreenDao() {
+        DaoMaster.DevOpenHelper devOpenHelper = new DaoMaster.DevOpenHelper(this, "czmGreenDao.db");
+        sqLiteDatabase = devOpenHelper.getWritableDatabase();
+        DaoMaster daoMaster = new DaoMaster(sqLiteDatabase);
+        daoSession = daoMaster.newSession();
+    }
+
+    public DaoSession getDaoSession() {
+        return daoSession;
+    }
+
+    public SQLiteDatabase getSQLiteDatabase() {
+        return sqLiteDatabase;
     }
 }

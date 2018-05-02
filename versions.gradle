@@ -33,6 +33,7 @@ versions.material_dialog = "0.9.6.0"
 versions.systembartint="1.0.3"
 versions.greendao="3.2.2"
 versions.greendao_gradle_plugin="3.2.2"
+versions.android_database_sqlcipher="3.5.6"//加密库
 versions.netty_all="4.1.23.Final"
 //Arouter
 versions.arouter_compiler = "1.1.4"
@@ -107,6 +108,7 @@ deps.systembartint="com.readystatesoftware.systembartint:systembartint:$versions
 //greendao
 deps.greendao_gradle_plugin="org.greenrobot:greendao-gradle-plugin:$versions.greendao_gradle_plugin"
 deps.greendao="org.greenrobot:greendao:$versions.greendao"
+deps.android_database_sqlcipher="net.zetetic:android-database-sqlcipher:$versions.android_database_sqlcipher"
 deps.netty_all="io.netty:netty-all:$versions.netty_all"
 ext.deps = deps
 
