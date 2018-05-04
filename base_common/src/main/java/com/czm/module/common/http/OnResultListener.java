@@ -2,10 +2,6 @@ package com.czm.module.common.http;
 
 /**
  * <p>在Retrofit中接口会导致泛型擦除，所以这里回调使用Class</p>
- *
- * @author 张华洋 2016/12/15 10:27
- * @version V1.0.0
- * @name OnResultListener
  */
 public class OnResultListener<T> {
 

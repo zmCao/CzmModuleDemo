@@ -30,10 +30,6 @@ import retrofit2.Retrofit;
 
 /**
  * <p>类说明</p>
- *
- * @author 张华洋 2016/12/5 14:09
- * @version V1.0.0
- * @name HttpClient
  */
 public class HttpClient {
 

@@ -139,3 +139,4 @@ public class UserDao extends AbstractDao<User, Long> {
     }
     
 }
+

@@ -21,10 +21,6 @@ import java.util.List;
  * 服务器返回数据的解析工具；
  * 支持XML,json对象,json数组
  * </p>
- *
- * @author 张华洋 2017/1/9 16:00
- * @version V1.2.0
- * @name DataParseUtil
  */
 
 

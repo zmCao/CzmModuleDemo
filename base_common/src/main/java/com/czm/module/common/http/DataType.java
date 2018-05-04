@@ -7,10 +7,6 @@ import java.lang.annotation.RetentionPolicy;
 
 /**
  * <p>服务端响应的数据类型</p>
- *
- * @author 张华洋 2017/5/2 21:53
- * @version V1.2.0
- * @name DataType
  */
 public class DataType {
 
