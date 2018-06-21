@@ -9,6 +9,7 @@ import com.czm.module.common.base.BaseActivity;
 import com.czm.module.common.base.ViewManager;
 import com.czm.module.common.utils.ToastUtils;
 import com.czm.module.common.utils.Utils;
+import com.czm.module_serial_port.sample.MainMenu;
 
 @Route(path = "/other/SerialPortLearnActivity")
 public class SerialPortLearnActivity extends BaseActivity {
@@ -19,7 +20,14 @@ public class SerialPortLearnActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_other_serial_port);
-
+        Button btn_MainMenu = findViewById(R.id.btn_MainMenu);
+        btn_MainMenu.setOnClickListener(v -> {
+            gotoActivity(MainMenu.class);
+        });
+        Button btn_Demo = findViewById(R.id.btn_Demo);
+        btn_Demo.setOnClickListener(v -> {
+            gotoActivity(SerialPortDemoActivity.class);
+        });
     }
 
     @Override

@@ -64,6 +64,7 @@ public class SerialPortFinder {
 			mDrivers = new Vector<Driver>();
 			LineNumberReader r = new LineNumberReader(new FileReader("/proc/tty/drivers"));
 			String l;
+
 			while((l = r.readLine()) != null) {
 				// Issue 3:
 				// Since driver name may contain spaces, we do not extract driver name with split()

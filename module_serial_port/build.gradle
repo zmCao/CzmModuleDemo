@@ -43,6 +43,11 @@ android {
             minifyEnabled false
         }
     }
+    sourceSets {
+        main {
+            jni.srcDirs = []
+        }
+    }
 }
 
 dependencies {

@@ -33,13 +33,15 @@ public class MainMenu extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
 
+
+        //配置
         final Button buttonSetup = (Button)findViewById(R.id.ButtonSetup);
         buttonSetup.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
 				startActivity(new Intent(MainMenu.this, SerialPortPreferences.class));
 			}
 		});
-
+		//发送接收数据
         final Button buttonConsole = (Button)findViewById(R.id.ButtonConsole);
         buttonConsole.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
@@ -60,7 +62,7 @@ public class MainMenu extends Activity {
 				startActivity(new Intent(MainMenu.this, Sending01010101Activity.class));
 			}
 		});
-
+		//关于
         final Button buttonAbout = (Button)findViewById(R.id.ButtonAbout);
         buttonAbout.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
@@ -70,7 +72,7 @@ public class MainMenu extends Activity {
 				builder.show();
 			}
 		});
-
+		//退出
         final Button buttonQuit = (Button)findViewById(R.id.ButtonQuit);
         buttonQuit.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {

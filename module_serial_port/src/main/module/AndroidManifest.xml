@@ -25,6 +25,7 @@
         <activity android:name=".sample.MainMenu" />
         <activity android:name=".sample.Sending01010101Activity" />
         <activity android:name=".sample.SerialPortPreferences" />
+        <activity android:name=".SerialPortDemoActivity" />
     </application>
 
 </manifest>

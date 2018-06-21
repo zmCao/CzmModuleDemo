@@ -115,7 +115,7 @@ deps.netty_all="io.netty:netty-all:$versions.netty_all"
 ext.deps = deps
 
 def build_versions = [:]
-build_versions.min_sdk = 18
+build_versions.min_sdk = 16
 build_versions.target_sdk = 27
 build_versions.build_tools = "27.0.2"
 ext.build_versions = build_versions

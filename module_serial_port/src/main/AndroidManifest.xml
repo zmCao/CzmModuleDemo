@@ -3,5 +3,11 @@
 
     <application android:theme="@style/AppTheme">
         <activity android:name=".SerialPortLearnActivity" />
+        <activity android:name=".sample.ConsoleActivity" />
+        <activity android:name=".sample.LoopbackActivity" />
+        <activity android:name=".sample.MainMenu" />
+        <activity android:name=".sample.Sending01010101Activity" />
+        <activity android:name=".sample.SerialPortPreferences" />
+        <activity android:name=".SerialPortDemoActivity" />
     </application>
 </manifest>

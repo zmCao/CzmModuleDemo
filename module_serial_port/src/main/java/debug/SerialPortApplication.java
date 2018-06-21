@@ -1,6 +1,7 @@
 package debug;
 
 import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 
 import com.czm.module.common.base.BaseApplication;
 
@@ -39,7 +40,7 @@ public class SerialPortApplication extends BaseApplication {
     public SerialPort getSerialPort() throws SecurityException, IOException, InvalidParameterException {
         if (mSerialPort == null) {
             /* Read serial port parameters */
-            SharedPreferences sp = getSharedPreferences("android_serialport_api.sample_preferences", MODE_PRIVATE);
+            SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
             String path = sp.getString("DEVICE", "");
             int baudrate = Integer.decode(sp.getString("BAUDRATE", "-1"));
 
