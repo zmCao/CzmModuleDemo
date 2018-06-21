@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.czm.module.other">
+    package="com.czm.module_serial_port">
 
-    <uses-permission android:name="android.permission.VIBRATE"></uses-permission>
 
     <application
-        android:name="debug.OtherApplication"
+        android:name="debug.SerialPortApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -20,9 +19,12 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".OtherLearnActivity" />
-        <activity android:name=".NoticeBoardMatchesActivity" />
-        <activity android:name=".BGARefreshActivity"></activity>
+        <activity android:name=".SerialPortLearnActivity" />
+        <activity android:name=".sample.ConsoleActivity" />
+        <activity android:name=".sample.LoopbackActivity" />
+        <activity android:name=".sample.MainMenu" />
+        <activity android:name=".sample.Sending01010101Activity" />
+        <activity android:name=".sample.SerialPortPreferences" />
     </application>
 
 </manifest>

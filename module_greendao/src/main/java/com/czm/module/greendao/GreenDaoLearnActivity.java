@@ -13,6 +13,7 @@ import com.czm.module.common.utils.ToastUtils;
 import com.czm.module.common.utils.Utils;
 import com.czm.module.greendao.db.UserDao;
 import com.czm.module.greendao.model.User;
+import com.orhanobut.logger.Logger;
 
 import java.util.List;
 
@@ -33,6 +34,11 @@ public class GreenDaoLearnActivity extends BaseActivity {
         setContentView(R.layout.activity_greendao_learn);
         userDao = ((GreenDaoApplication) getApplication()).getDaoSession().getUserDao();
         initView();
+        Logger.v("v");
+        //Logger.d("d");
+        Logger.i("i");
+        Logger.w("w");
+        Logger.e("e");
     }
 
     @Override

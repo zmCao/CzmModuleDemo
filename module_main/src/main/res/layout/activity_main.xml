@@ -25,4 +25,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Other"/>
+    <Button
+        android:id="@+id/btnSerialPort"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="串口通讯"/>
 </LinearLayout>

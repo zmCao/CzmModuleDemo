@@ -62,11 +62,11 @@ dependencies {
     api deps.glide
     api deps.systembartint
     //view
-    api deps.photo_view
-    api deps.easy_recycler
+    api deps.bga_refreshlayout
     api deps.material_dialog
     api deps.logger
     api deps.toasty
+
     //greendao
     api deps.greendao
     //数据库加密

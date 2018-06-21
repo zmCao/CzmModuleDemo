@@ -1,4 +1,4 @@
-package com.czm.module.other;
+package com.czm.module_serial_port;
 
 import android.os.Bundle;
 import android.view.KeyEvent;
@@ -10,22 +10,16 @@ import com.czm.module.common.base.ViewManager;
 import com.czm.module.common.utils.ToastUtils;
 import com.czm.module.common.utils.Utils;
 
-@Route(path = "/other/OtherLearnActivity")
-public class OtherLearnActivity extends BaseActivity {
+@Route(path = "/other/SerialPortLearnActivity")
+public class SerialPortLearnActivity extends BaseActivity {
 
     private long mExitTime;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_other_learn);
-        Button btn_notice_board_matches = findViewById(R.id.btn_notice_board_matches);
-//        Button btn_notice_board_matches=null;
-        btn_notice_board_matches.setOnClickListener(v -> gotoActivity(NoticeBoardMatchesActivity.class));
-        Button btn_bga_refreshlayout = findViewById(R.id.btn_bga_refreshlayout);
-        btn_bga_refreshlayout.setOnClickListener(v -> {
+        setContentView(R.layout.activity_other_serial_port);
 
-        });
     }
 
     @Override

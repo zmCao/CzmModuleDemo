@@ -9,4 +9,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Android 8.0系统的通知栏适配"/>
+    <Button
+        android:id="@+id/btn_bga_refreshlayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="bga_refreshlayout   Demo"/>
 </LinearLayout>

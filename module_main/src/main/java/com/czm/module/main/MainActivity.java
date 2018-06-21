@@ -20,5 +20,7 @@ public class  MainActivity extends BaseActivity {
         btnNetty.setOnClickListener(v -> ARouter.getInstance().build("/netty/NettyLearnActivity").navigation());
         Button btnOther=findViewById(R.id.btnOther);
         btnOther.setOnClickListener(v -> ARouter.getInstance().build("/other/OtherLearnActivity").navigation());
+        Button btnSerialPort=findViewById(R.id.btnSerialPort);
+        btnSerialPort.setOnClickListener(v -> ARouter.getInstance().build("/other/SerialPortLearnActivity").navigation());
     }
 }

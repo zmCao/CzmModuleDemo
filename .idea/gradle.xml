@@ -16,6 +16,7 @@
             <option value="$PROJECT_DIR$/module_main" />
             <option value="$PROJECT_DIR$/module_netty" />
             <option value="$PROJECT_DIR$/module_other" />
+            <option value="$PROJECT_DIR$/module_serial_port" />
           </set>
         </option>
         <option name="resolveModulePerSourceSet" value="false" />

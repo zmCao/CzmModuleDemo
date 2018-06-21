@@ -83,5 +83,6 @@ dependencies {
         implementation project(':module_greendao')
         implementation project(':module_netty')
         implementation project(':module_other')
+        implementation project(':module_serial_port')
     }
 }
