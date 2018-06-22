@@ -9,7 +9,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import android_serialport_api.SerialUtilOld;
+import android_serialport_api.SerialUtil;
 
 public class SerialPortDemoActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -21,7 +21,7 @@ public class SerialPortDemoActivity extends AppCompatActivity implements View.On
     private ReadThread readThread;
     private int size = -1;
     private static final String TAG = "MainActivity";
-    private SerialUtilOld serialUtilOld;
+    private SerialUtil serialUtil;
     //    private String path="/dev/ttyUSB9";
     private String path = "/dev/ttyS5";
     private int baudrate = 115200;
@@ -51,7 +51,7 @@ public class SerialPortDemoActivity extends AppCompatActivity implements View.On
         stop_b.setOnClickListener(this);
         try {
             //设置串口号、波特率，
-            serialUtilOld = new SerialUtilOld(path, baudrate, 0);
+            serialUtil = new SerialUtil(path, baudrate, 0);
         } catch (NullPointerException e) {
             Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
             e.printStackTrace();
@@ -71,7 +71,9 @@ public class SerialPortDemoActivity extends AppCompatActivity implements View.On
                 String context = send_et.getText().toString();
                 Log.d(TAG, "onClick: " + context);
                 try {
-                    serialUtilOld.setData(SerialUtilOld.hexStringToBytes(SerialUtilOld.bytesToHexString(context.getBytes(), context.getBytes().length) + "0d0a"));
+                    //serialUtil.setData(SerialUtil.hexStringToBytes(SerialUtil.bytesToHexString(context.getBytes(), context.getBytes().length) + "0d0a"));
+                    context = context.replace("\r","\n").replace("\n","\r\n").replace("\\r\\n","\r\n");
+                    serialUtil.setData(context.getBytes());
                 } catch (NullPointerException e) {
                     Toast.makeText(this, "串口设置有误，无法发送", Toast.LENGTH_SHORT).show();
                     e.printStackTrace();
@@ -95,10 +97,11 @@ public class SerialPortDemoActivity extends AppCompatActivity implements View.On
             super.run();
             while (!Thread.currentThread().isInterrupted()) {
                 try {
-                    byte[] data = serialUtilOld.getDataByte();
+                    byte[] data = serialUtil.getDataByte();
                     if (data != null) {
-                        String sRec =SerialUtilOld.bytesToHexString(data, data.length);
-                        onDataReceived(sRec);
+                        String s=new String(data);
+                        String sRec = SerialUtil.bytesToHexString(data, data.length);
+                        onDataReceived(s);
                     }
                 } catch (NullPointerException e) {
                     onDataReceived("-1");
