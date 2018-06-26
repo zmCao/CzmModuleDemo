@@ -13,5 +13,15 @@
     <string name="load_error_resume">加载出错，点击重试</string>
     <string name="more">更多</string>
     <string name="no_data">暂无数据</string>
+    <!--权限-->
+    <string name="setting">设置</string>
+    <string name="resume">继续</string>
+    <string name="cancel">取消</string>
+    <string name="title_dialog">提示</string>
+    <string name="message_permission_rationale">授予以下权限以继续该程序:\n\n%1$s</string>
 
+    <string name="message_install_failed">你的手机不允许我们安装应用程序.</string>
+
+    <string name="message_overlay_failed">你的手机不允许我们使用其他的应用程序.</string>
+    <string name="message_permission_always_failed">请在设置中给予我们许可：\n\n%1$s</string>
 </resources>
