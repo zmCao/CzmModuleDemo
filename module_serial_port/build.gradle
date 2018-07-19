@@ -8,7 +8,7 @@ android {
     compileSdkVersion build_versions.target_sdk
     defaultConfig {
         minSdkVersion build_versions.min_sdk
-        targetSdkVersion build_versions.target_sdk
+        targetSdkVersion 22
         versionCode 1
         versionName "1.0"
         multiDexEnabled true
