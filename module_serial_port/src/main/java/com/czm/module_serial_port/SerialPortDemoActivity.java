@@ -23,7 +23,7 @@ public class SerialPortDemoActivity extends AppCompatActivity implements View.On
     private static final String TAG = "MainActivity";
     private SerialUtil serialUtil;
     //    private String path="/dev/ttyUSB9";
-    private String path = "/dev/ttyS5";
+    private String path = "/dev/ttyS4";
     private int baudrate = 115200;
     private int flags = 0;
 
@@ -72,8 +72,9 @@ public class SerialPortDemoActivity extends AppCompatActivity implements View.On
                 Log.d(TAG, "onClick: " + context);
                 try {
                     //serialUtil.setData(SerialUtil.hexStringToBytes(SerialUtil.bytesToHexString(context.getBytes(), context.getBytes().length) + "0d0a"));
-                    context = context.replace("\r","\n").replace("\n","\r\n").replace("\\r\\n","\r\n");
-                    serialUtil.setData(context.getBytes());
+//                    context = context.replace("\r","\n").replace("\n","\r\n").replace("\\r\\n","\r\n");
+
+                    serialUtil.setData(SerialUtil.hexStringToBytes(context));
                 } catch (NullPointerException e) {
                     Toast.makeText(this, "串口设置有误，无法发送", Toast.LENGTH_SHORT).show();
                     e.printStackTrace();

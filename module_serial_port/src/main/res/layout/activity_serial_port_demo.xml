@@ -16,7 +16,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/main_stop_b"
             android:hint="发送的内容"
-            android:text="" />
+            android:text="21214F0D0A" />
 
         <Button
             android:id="@+id/main_send_b"
