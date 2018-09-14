@@ -61,32 +61,28 @@ public class SerialPortDemoActivity extends AppCompatActivity implements View.On
 
     @Override
     public void onClick(View view) {
-        switch (view.getId()) {
-            case R.id.main_recive_b: {
-                readThread = new ReadThread();
-                readThread.start();
-            }
-            break;
-            case R.id.main_send_b: {
-                String context = send_et.getText().toString();
-                Log.d(TAG, "onClick: " + context);
-                try {
-                    //serialUtil.setData(SerialUtil.hexStringToBytes(SerialUtil.bytesToHexString(context.getBytes(), context.getBytes().length) + "0d0a"));
+        int i = view.getId();
+        if (i == R.id.main_recive_b) {
+            readThread = new ReadThread();
+            readThread.start();
+
+        } else if (i == R.id.main_send_b) {
+            String context = send_et.getText().toString();
+            Log.d(TAG, "onClick: " + context);
+            try {
+                //serialUtil.setData(SerialUtil.hexStringToBytes(SerialUtil.bytesToHexString(context.getBytes(), context.getBytes().length) + "0d0a"));
 //                    context = context.replace("\r","\n").replace("\n","\r\n").replace("\\r\\n","\r\n");
 
-                    serialUtil.setData(SerialUtil.hexStringToBytes(context));
-                } catch (NullPointerException e) {
-                    Toast.makeText(this, "串口设置有误，无法发送", Toast.LENGTH_SHORT).show();
-                    e.printStackTrace();
-                }
+                serialUtil.setData(SerialUtil.hexStringToBytes(context));
+            } catch (NullPointerException e) {
+                Toast.makeText(this, "串口设置有误，无法发送", Toast.LENGTH_SHORT).show();
+                e.printStackTrace();
             }
-            break;
-            case R.id.main_stop_b: {
-                //停止接收
-                readThread.interrupt();
-                receive_tv.setText("");
-            }
-            break;
+
+        } else if (i == R.id.main_stop_b) {
+            readThread.interrupt();
+            receive_tv.setText("");
+
         }
 
     }

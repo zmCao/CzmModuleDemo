@@ -28,13 +28,13 @@ import android.content.DialogInterface.OnClickListener;
 import android.os.Bundle;
 
 import com.czm.module_serial_port.R;
+import com.czm.module_serial_port.SerialPortUtil;
 
 import android_serialport_api.SerialPort;
-import debug.SerialPortApplication;
 
 public abstract class SerialPortActivity extends Activity {
 
-	protected SerialPortApplication mApplication;
+	protected SerialPortUtil serialPortUtil;
 	protected SerialPort mSerialPort;
 	protected OutputStream mOutputStream;
 	private InputStream mInputStream;
@@ -77,9 +77,9 @@ public abstract class SerialPortActivity extends Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		mApplication = (SerialPortApplication) getApplication();
+		serialPortUtil = new SerialPortUtil();
 		try {
-			mSerialPort = mApplication.getSerialPort();
+			mSerialPort = serialPortUtil.getSerialPort();
 			mOutputStream = mSerialPort.getOutputStream();
 			mInputStream = mSerialPort.getInputStream();
 
@@ -101,7 +101,7 @@ public abstract class SerialPortActivity extends Activity {
 	protected void onDestroy() {
 		if (mReadThread != null)
 			mReadThread.interrupt();
-		mApplication.closeSerialPort();
+		serialPortUtil.closeSerialPort();
 		mSerialPort = null;
 		super.onDestroy();
 	}

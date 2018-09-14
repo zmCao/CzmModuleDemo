@@ -46,6 +46,8 @@ dependencies {
     api deps.rxjava2
     api deps.retrofit.runtime
     api deps.retrofit.gson
+    api deps.retrofit.interceptor
+    api deps.retrofit.adapter
     api deps.persistent_cookie
 
     //Dagger

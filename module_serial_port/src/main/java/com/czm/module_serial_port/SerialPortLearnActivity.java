@@ -11,7 +11,7 @@ import com.czm.module.common.utils.ToastUtils;
 import com.czm.module.common.utils.Utils;
 import com.czm.module_serial_port.sample.MainMenu;
 
-@Route(path = "/other/SerialPortLearnActivity")
+@Route(path = "/port/SerialPortLearnActivity")
 public class SerialPortLearnActivity extends BaseActivity {
 
     private long mExitTime;

@@ -9,12 +9,14 @@ versions.android_gradle_plugin = "3.1.0"
 versions.kotlin = "1.1.51"
 versions.support = "27.1.0"
 versions.multidex = "1.0.2"
-versions.constraint_layout = "1.0.2"
+versions.constraint_layout = "1.1.2"
 versions.dagger = "2.11"
 versions.glide = "4.3.1"
+versions.glide_compiler="4.3.1"
 versions.rxjava2 = "2.1.7"
 versions.rx_android = "2.0.1"
 versions.retrofit = "2.3.0"
+versions.okhttp="3.9.1"
 versions.event_bus = "3.1.1"
 versions.photo_view = "2.0.0"
 versions.persistent_cookie = "v1.0.1"
@@ -36,11 +38,15 @@ versions.greendao="3.2.2"
 versions.greendao_gradle_plugin="3.2.2"
 versions.android_database_sqlcipher="3.5.6"//加密库
 versions.netty_all="4.1.23.Final"
+versions.circleprogressbar="1.1.1"
+versions.calendarview="3.3.2"
+versions.banner="1.4.10"
 //Arouter
 versions.arouter_compiler = "1.1.4"
 versions.arouter_api = "1.3.1"
-
-
+versions.zxing = "3.3.0"
+versions.zxing_android_embedded = "3.6.0"
+versions.BaseRecyclerViewAdapterHelper="2.9.30"
 
 def deps = [:]
 
@@ -60,9 +66,12 @@ deps.support = support
 
 def retrofit = [:]
 retrofit.runtime = "com.squareup.retrofit2:retrofit:$versions.retrofit"
-retrofit.adapter = "com.squareup.retrofit2:adapter-rxjava2:$versions.retrofi"
+retrofit.adapter = "com.squareup.retrofit2:adapter-rxjava2:$versions.retrofit"
 retrofit.gson = "com.squareup.retrofit2:converter-gson:$versions.retrofit"
+retrofit.okhttp="com.squareup.okhttp3:okhttp:$versions.okhttp"
+retrofit.interceptor="com.squareup.okhttp3:logging-interceptor:$versions.okhttp"
 deps.retrofit = retrofit
+
 
 
 def dagger = [:]
@@ -89,12 +98,16 @@ deps.easy_recycler = "com.jude:easyrecyclerview:$versions.easy_recycler"
 deps.photo_view = "com.github.chrisbanes:PhotoView:$versions.photo_view"
 deps.material_dialog = "com.afollestad.material-dialogs:core:$versions.material_dialog"
 deps.bga_refreshlayout="cn.bingoogolapple:bga-refreshlayout:$versions.bga_refreshlayout@aar"
+deps.circleprogressbar="com.dinuscxj:circleprogressbar:$versions.circleprogressbar"
+deps.calendarview="com.haibin:calendarview:$versions.calendarview";
+deps.banner="com.youth.banner:banner:$versions.banner"
 
 deps.android_gradle_plugin = "com.android.tools.build:gradle:$versions.android_gradle_plugin"
 deps.rxjava2 = "io.reactivex.rxjava2:rxjava:$versions.rxjava2"
 deps.rx_android = "io.reactivex.rxjava2:rxandroid:$versions.rx_android"
 //other
 deps.glide = "com.github.bumptech.glide:glide:$versions.glide"
+deps.glide_compiler = "com.github.bumptech.glide:compiler:$versions.glide"
 deps.event_bus = "org.greenrobot:eventbus:$versions.event_bus"
 deps.persistent_cookie = "com.github.franmontiel:PersistentCookieJar:$versions.persistent_cookie"
 deps.gson = "com.google.code.gson:gson:$versions.gson"
@@ -107,6 +120,10 @@ deps.logger = "com.orhanobut:logger:$versions.logger"
 deps.arouter_api = "com.alibaba:arouter-api:$versions.arouter_api"
 deps.arouter_compiler = "com.alibaba:arouter-compiler:$versions.arouter_compiler"
 deps.systembartint="com.readystatesoftware.systembartint:systembartint:$versions.systembartint"
+deps.zxing = "com.google.zxing:core:$versions.zxing"
+deps.zxing_android_embedded = "com.journeyapps:zxing-android-embedded:$versions.zxing_android_embedded"
+deps.BaseRecyclerViewAdapterHelper="com.github.CymChad:BaseRecyclerViewAdapterHelper:$versions.BaseRecyclerViewAdapterHelper"
+
 //greendao
 deps.greendao_gradle_plugin="org.greenrobot:greendao-gradle-plugin:$versions.greendao_gradle_plugin"
 deps.greendao="org.greenrobot:greendao:$versions.greendao"
@@ -115,9 +132,9 @@ deps.netty_all="io.netty:netty-all:$versions.netty_all"
 ext.deps = deps
 
 def build_versions = [:]
-build_versions.min_sdk = 16
+build_versions.min_sdk = 18
 build_versions.target_sdk = 27
-build_versions.build_tools = "27.0.2"
+build_versions.build_tools = "27.0.3"
 ext.build_versions = build_versions
 
 
