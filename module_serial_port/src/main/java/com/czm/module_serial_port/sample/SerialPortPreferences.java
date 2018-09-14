@@ -23,21 +23,21 @@ import android.preference.Preference.OnPreferenceChangeListener;
 import android.preference.PreferenceActivity;
 
 import com.czm.module_serial_port.R;
+import com.czm.module_serial_port.SerialPortUtil;
 
 import android_serialport_api.SerialPortFinder;
-import debug.SerialPortApplication;
 
 public class SerialPortPreferences extends PreferenceActivity {
 
-	private SerialPortApplication mApplication;
+	private SerialPortUtil serialPortUtil;
 	private SerialPortFinder mSerialPortFinder;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-		mApplication = (SerialPortApplication) getApplication();
-		mSerialPortFinder = mApplication.mSerialPortFinder;
+		serialPortUtil = new SerialPortUtil();
+		mSerialPortFinder = serialPortUtil.mSerialPortFinder;
 
 		addPreferencesFromResource(R.xml.serial_port_preferences);
 

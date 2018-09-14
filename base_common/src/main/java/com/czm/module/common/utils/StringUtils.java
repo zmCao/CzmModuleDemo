@@ -189,4 +189,48 @@ public class StringUtils {
         }
         return new String(chars);
     }
+    public static String unicodeToCn(String unicode) {
+        /** 以 \ u 分割，因为java注释也能识别unicode，因此中间加了一个空格*/
+        String[] strs = unicode.split("\\\\u");
+        String returnStr = "";
+        // 由于unicode字符串以 \ u 开头，因此分割出的第一个字符是""。
+        for (int i = 1; i < strs.length; i++) {
+            returnStr += (char) Integer.valueOf(strs[i], 16).intValue();
+        }
+        return returnStr;
+    }
+
+    public static String cnToUnicode(String cn) {
+        char[] chars = cn.toCharArray();
+        String returnStr = "";
+        for (int i = 0; i < chars.length; i++) {
+            returnStr += "\\u" + Integer.toString(chars[i], 16);
+        }
+        return returnStr;
+    }
+    /**
+     * 描述：判断一个字符串是否为null或空值.
+     *
+     * @param str 指定的字符串
+     * @return true or false
+     */
+    public static boolean isEmpty(String str) {
+        return str == null || str.trim().length() == 0;
+    }
+    /**
+     * 描述：不足2个字符的在前面补“0”.
+     *
+     * @param str 指定的字符串
+     * @return 至少2个字符的字符串
+     */
+    public static String strFormat2(String str) {
+        try {
+            if(str.length()<=1){
+                str = "0"+str;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return str;
+    }
 }

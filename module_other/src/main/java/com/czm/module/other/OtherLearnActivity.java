@@ -26,6 +26,14 @@ public class OtherLearnActivity extends BaseActivity {
         btn_bga_refreshlayout.setOnClickListener(v -> {
 
         });
+        Button btn_zxing=findViewById(R.id.btn_zxing);
+        btn_zxing.setOnClickListener(v -> {
+            gotoActivity(ZXingTestActivity.class);
+        });
+        Button btn_changeIp=findViewById(R.id.btn_changeIp);
+        btn_changeIp.setOnClickListener(v -> {
+            gotoActivity(SetIpActivity.class);
+        });
     }
 
     @Override

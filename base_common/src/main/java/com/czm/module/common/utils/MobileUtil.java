@@ -1,5 +1,6 @@
 package com.czm.module.common.utils;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.ActivityManager;
 import android.app.ActivityManager.RunningAppProcessInfo;
@@ -14,6 +15,8 @@ import android.hardware.SensorManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
+import android.net.wifi.WifiInfo;
+import android.net.wifi.WifiManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -21,9 +24,18 @@ import android.provider.Settings;
 import android.telephony.TelephonyManager;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.InputStreamReader;
+import java.io.LineNumberReader;
+import java.io.Reader;
+import java.net.NetworkInterface;
+import java.net.SocketException;
+import java.util.Enumeration;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -34,38 +46,38 @@ import java.util.TimerTask;
 public class MobileUtil {
     /**
      * 获取设备型号
+     *
      * @return
      */
-    public static String getDeiviceModel()
-    {
+    public static String getDeiviceModel() {
         return Build.MODEL;
     }
 
     /**
      * 获取系统版本
+     *
      * @return
      */
-    public static String getSysRELEASE()
-    {
+    public static String getSysRELEASE() {
         return Build.VERSION.RELEASE;
     }
 
     /**
      * 获取系统语言
+     *
      * @return
      */
-    public static String getSysLanguage(Context mContext)
-    {
+    public static String getSysLanguage(Context mContext) {
         return mContext.getResources().getConfiguration().locale.getLanguage();
     }
 
     /**
      * 获取加速度传感器的型号
+     *
      * @param CTX
      * @return
      */
-    public static String getSensorModel(Context CTX)
-    {
+    public static String getSensorModel(Context CTX) {
         SensorManager mySensorManager = (SensorManager) CTX.getSystemService(Context.SENSOR_SERVICE);
         return mySensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER).getName();
     }
@@ -73,28 +85,30 @@ public class MobileUtil {
 
     /**
      * 判断网络连接是否已开
+     *
      * @param context
      * @return
      */
-    public static boolean isConn(Context context)
-    {
-        boolean bisConnFlag=false;
-        ConnectivityManager conManager = (ConnectivityManager)context.getSystemService(Context.CONNECTIVITY_SERVICE);
+    public static boolean isConn(Context context) {
+        boolean bisConnFlag = false;
+        ConnectivityManager conManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo network = conManager.getActiveNetworkInfo();
-        if(network!=null){
+        if (network != null) {
             bisConnFlag = (network.getState() == NetworkInfo.State.CONNECTED);
         }
         return bisConnFlag;
     }
+
     /**
      * 打开键盘
+     *
      * @param mContext
      */
     public static void openKeyboard(final Context mContext) {
         Timer timer = new Timer();
         timer.schedule(new TimerTask() {
             public void run() {
-                InputMethodManager imm = (InputMethodManager) mContext. getSystemService(Context.INPUT_METHOD_SERVICE);
+                InputMethodManager imm = (InputMethodManager) mContext.getSystemService(Context.INPUT_METHOD_SERVICE);
                 imm.toggleSoftInput(0, InputMethodManager.HIDE_NOT_ALWAYS);
             }
         }, 100);
@@ -102,29 +116,29 @@ public class MobileUtil {
 
     /**
      * 关闭软键盘
+     *
      * @param mContext
      */
-    public static void closeKeyboard(final Context mContext)
-    {
-        View view = ((Activity)mContext).getWindow().peekDecorView();
+    public static void closeKeyboard(final Context mContext) {
+        View view = ((Activity) mContext).getWindow().peekDecorView();
         if (view != null) {
-            InputMethodManager inputmanger = (InputMethodManager)mContext.getSystemService(mContext.INPUT_METHOD_SERVICE);
+            InputMethodManager inputmanger = (InputMethodManager) mContext.getSystemService(mContext.INPUT_METHOD_SERVICE);
             inputmanger.hideSoftInputFromWindow(view.getWindowToken(), 0);
         }
     }
 
     /**
      * 获取版本名称
+     *
      * @param mContext
      * @return
      */
-    public static String getVersionName(Context mContext)
-    {
-        String sVersionName="1.0";
+    public static String getVersionName(Context mContext) {
+        String sVersionName = "1.0";
         PackageInfo pInfo;
         try {
             pInfo = mContext.getPackageManager().getPackageInfo(mContext.getPackageName(), 0);
-            sVersionName=pInfo.versionName;
+            sVersionName = pInfo.versionName;
         } catch (NameNotFoundException e) {
             e.printStackTrace();
         }
@@ -133,16 +147,16 @@ public class MobileUtil {
 
     /**
      * 获取版本号
+     *
      * @param mContext
      * @return
      */
-    public static int getVersionCode(Context mContext)
-    {
-        int iVersionCode=1;
+    public static int getVersionCode(Context mContext) {
+        int iVersionCode = 1;
         PackageInfo pInfo;
         try {
             pInfo = mContext.getPackageManager().getPackageInfo(mContext.getPackageName(), 0);
-            iVersionCode=pInfo.versionCode;
+            iVersionCode = pInfo.versionCode;
         } catch (NameNotFoundException e) {
             e.printStackTrace();
         }
@@ -159,6 +173,7 @@ public class MobileUtil {
 
     /**
      * 根据手机的分辨率从px(像素)的单位转成为dp
+     *
      * @param context
      * @param pxValue
      * @return
@@ -167,17 +182,19 @@ public class MobileUtil {
         final float scale = context.getResources().getDisplayMetrics().density;
         return (int) (pxValue / scale + 0.5f);
     }
+
     /**
-     *  判断指定包名的进程是否运行
+     * 判断指定包名的进程是否运行
+     *
      * @param context
      * @param packageName 指定包名
      * @return 是否运行
      */
-    public static boolean isRunning(Context context, String packageName){
+    public static boolean isRunning(Context context, String packageName) {
         ActivityManager am = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
         List<RunningAppProcessInfo> infos = am.getRunningAppProcesses();
-        for(RunningAppProcessInfo rapi : infos){
-            if(rapi.processName.equals(packageName))
+        for (RunningAppProcessInfo rapi : infos) {
+            if (rapi.processName.equals(packageName))
                 return true;
         }
         return false;
@@ -185,6 +202,7 @@ public class MobileUtil {
 
     /**
      * 获取ApiKey
+     *
      * @param context
      * @param metaKey
      * @return
@@ -213,36 +231,35 @@ public class MobileUtil {
 
     /**
      * 根据URI获取SD卡的绝对路径
+     *
      * @param context
      * @param uri
      * @return
      */
     public static String getAbsoluteImagePath(Activity context, Uri uri) {
         // can post image
-        String[] proj = { MediaStore.Images.Media.DATA };
+        String[] proj = {MediaStore.Images.Media.DATA};
         Cursor cursor = context.getContentResolver().query(uri, proj, // Which columns to return
                 null, // WHERE clause; which rows to return (all rows)
                 null, // WHERE clause selection arguments (none)
                 null); // Order-by clause (ascending by name)
-        if(cursor!=null)
-        {
+        if (cursor != null) {
             int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
             cursor.moveToFirst();
             return cursor.getString(column_index);
-        }
-        else
-        {
+        } else {
             return uri.getPath();
         }
     }
+
     /**
      * 判断网络类型
+     *
      * @param context
      * @return -1未连接，0手机网络2G/3G,1 Wifi网络
      */
     public static int getConnectedType(Context context) {
-        if(context!=null)
-        {
+        if (context != null) {
             ConnectivityManager mConnectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
             NetworkInfo mNetworkInfo = mConnectivityManager.getActiveNetworkInfo();
             if (mNetworkInfo != null && mNetworkInfo.isAvailable()) {
@@ -254,11 +271,11 @@ public class MobileUtil {
 
     /**
      * 返回屏幕宽度
+     *
      * @param context
      * @return
      */
-    public static int getMobileWidth(Activity context)
-    {
+    public static int getMobileWidth(Activity context) {
         DisplayMetrics dm = new DisplayMetrics();
         context.getWindowManager().getDefaultDisplay().getMetrics(dm);
         return dm.widthPixels;
@@ -266,13 +283,14 @@ public class MobileUtil {
 
     /**
      * 获得当前进程的名字
+     *
      * @param context
      * @return
      */
     public static String getCurProcessName(Context context) {
         int pid = android.os.Process.myPid();
         ActivityManager activityManager = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
-        for (ActivityManager.RunningAppProcessInfo appProcess : activityManager.getRunningAppProcesses()) {
+        for (RunningAppProcessInfo appProcess : activityManager.getRunningAppProcesses()) {
             if (appProcess.pid == pid) {
                 return appProcess.processName;
             }
@@ -282,31 +300,33 @@ public class MobileUtil {
 
 
     public static String getDeviceInfo(Context context) {
-        try{
+        try {
             org.json.JSONObject json = new org.json.JSONObject();
-            android.telephony.TelephonyManager tm = (android.telephony.TelephonyManager) context
+            TelephonyManager tm = (TelephonyManager) context
                     .getSystemService(Context.TELEPHONY_SERVICE);
 
             String device_id = tm.getDeviceId();
-            android.net.wifi.WifiManager wifi = (android.net.wifi.WifiManager) context.getSystemService(Context.WIFI_SERVICE);
+            WifiManager wifi = (WifiManager) context.getSystemService(Context.WIFI_SERVICE);
             String mac = wifi.getConnectionInfo().getMacAddress();
             json.put("mac", mac);
-            if( TextUtils.isEmpty(device_id) ){
+            if (TextUtils.isEmpty(device_id)) {
                 device_id = mac;
             }
 
-            if( TextUtils.isEmpty(device_id) ){
-                device_id = android.provider.Settings.Secure.getString(context.getContentResolver(),android.provider.Settings.Secure.ANDROID_ID);
+            if (TextUtils.isEmpty(device_id)) {
+                device_id = Settings.Secure.getString(context.getContentResolver(), Settings.Secure.ANDROID_ID);
             }
             json.put("device_id", device_id);
             return json.toString();
-        }catch(Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return null;
     }
+
     /**
      * 获取状态栏高度
+     *
      * @param context
      * @return
      */
@@ -319,4 +339,254 @@ public class MobileUtil {
         return result;
     }
 
+    /**
+     * 获取MAC
+     * @param context
+     * @return
+     */
+    public static String getMac(Context context) {
+
+        String strMac = null;
+
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
+            Log.e("=====", "6.0以下");
+            strMac = getLocalMacAddressFromWifiInfo(context);
+            return strMac;
+        } else if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N) {
+            Log.e("=====", "6.0以上7.0以下");
+            strMac = getMacAddress(context);
+            return strMac;
+        } else {
+            Log.e("=====", "7.0以上");
+            if (!TextUtils.isEmpty(getMacAddress(context))) {
+                Log.e("=====", "7.0以上1");
+                strMac = getMacAddress(context);
+                return strMac;
+            } else if (!TextUtils.isEmpty(getMachineHardwareAddress())) {
+                Log.e("=====", "7.0以上2");
+                strMac = getMachineHardwareAddress();
+                return strMac;
+            } else {
+                Log.e("=====", "7.0以上3");
+                strMac = getLocalMacAddressFromBusybox();
+                return strMac;
+            }
+        }
+
+    }
+
+    /**
+     * 根据wifi信息获取本地mac
+     *
+     * @param context
+     * @return
+     */
+    @SuppressLint("HardwareIds")
+    private static String getLocalMacAddressFromWifiInfo(Context context) {
+        WifiManager wifi = (WifiManager) context.getApplicationContext().getSystemService(Context.WIFI_SERVICE);
+        WifiInfo winfo = null;
+        if (wifi != null) {
+            winfo = wifi.getConnectionInfo();
+            return winfo.getMacAddress();
+        }
+        return null;
+    }
+
+    /**
+     * android 6.0及以上、7.0以下 获取mac地址
+     *
+     * @param context
+     * @return
+     */
+    private static String getMacAddress(Context context) {
+
+        // 如果是6.0以下，直接通过wifimanager获取
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
+            String macAddress0 = getMacAddress0(context);
+            if (!TextUtils.isEmpty(macAddress0)) {
+                return macAddress0;
+            }
+        }
+        String str = "";
+        String macSerial = "";
+        try {
+            Process pp = Runtime.getRuntime().exec(
+                    "cat /sys/class/net/wlan0/address");
+            InputStreamReader ir = new InputStreamReader(pp.getInputStream());
+            LineNumberReader input = new LineNumberReader(ir);
+            for (; null != str; ) {
+                str = input.readLine();
+                if (str != null) {
+                    macSerial = str.trim();// 去空格
+                    break;
+                }
+            }
+        } catch (Exception ex) {
+            Log.e("----->" + "NetInfoManager", "getMacAddress:" + ex.toString());
+        }
+        if (macSerial == null || "".equals(macSerial)) {
+            try {
+                return loadFileAsString("/sys/class/net/eth0/address")
+                        .toUpperCase().substring(0, 17);
+            } catch (Exception e) {
+                e.printStackTrace();
+                Log.e("----->" + "NetInfoManager",
+                        "getMacAddress:" + e.toString());
+            }
+
+        }
+        return macSerial;
+    }
+
+    private static String getMacAddress0(Context context) {
+        if (isAccessWifiStateAuthorized(context)) {
+            WifiManager wifiMgr = (WifiManager) context.getApplicationContext()
+                    .getSystemService(Context.WIFI_SERVICE);
+            WifiInfo wifiInfo = null;
+            try {
+                wifiInfo = wifiMgr.getConnectionInfo();
+                return wifiInfo.getMacAddress();
+            } catch (Exception e) {
+                Log.e("----->" + "NetInfoManager",
+                        "getMacAddress0:" + e.toString());
+            }
+
+        }
+        return "";
+
+    }
+
+    /**
+     * Check whether accessing wifi state is permitted
+     *
+     * @param context
+     * @return
+     */
+    private static boolean isAccessWifiStateAuthorized(Context context) {
+        if (PackageManager.PERMISSION_GRANTED == context
+                .checkCallingOrSelfPermission("android.permission.ACCESS_WIFI_STATE")) {
+            Log.e("----->" + "NetInfoManager", "isAccessWifiStateAuthorized:"
+                    + "access wifi state is enabled");
+            return true;
+        } else
+            return false;
+    }
+
+    private static String loadFileAsString(String fileName) throws Exception {
+        FileReader reader = new FileReader(fileName);
+        String text = loadReaderAsString(reader);
+        reader.close();
+        return text;
+    }
+
+    private static String loadReaderAsString(Reader reader) throws Exception {
+        StringBuilder builder = new StringBuilder();
+        char[] buffer = new char[4096];
+        int readLength = reader.read(buffer);
+        while (readLength >= 0) {
+            builder.append(buffer, 0, readLength);
+            readLength = reader.read(buffer);
+        }
+        return builder.toString();
+    }
+    /**
+     * android 7.0及以上 （2）扫描各个网络接口获取mac地址
+     *
+     */
+    /**
+     * 获取设备HardwareAddress地址
+     *
+     * @return
+     */
+    private static String getMachineHardwareAddress() {
+        Enumeration<NetworkInterface> interfaces = null;
+        try {
+            interfaces = NetworkInterface.getNetworkInterfaces();
+        } catch (SocketException e) {
+            e.printStackTrace();
+        }
+        String hardWareAddress = null;
+        NetworkInterface iF = null;
+        if (interfaces == null) {
+            return null;
+        }
+        while (interfaces.hasMoreElements()) {
+            iF = interfaces.nextElement();
+            try {
+                hardWareAddress = bytesToString(iF.getHardwareAddress());
+                if (hardWareAddress != null)
+                    break;
+            } catch (SocketException e) {
+                e.printStackTrace();
+            }
+        }
+        return hardWareAddress;
+    }
+
+    /***
+     * byte转为String
+     *
+     * @param bytes
+     * @return
+     */
+    private static String bytesToString(byte[] bytes) {
+        if (bytes == null || bytes.length == 0) {
+            return null;
+        }
+        StringBuilder buf = new StringBuilder();
+        for (byte b : bytes) {
+            buf.append(String.format("%02X:", b));
+        }
+        if (buf.length() > 0) {
+            buf.deleteCharAt(buf.length() - 1);
+        }
+        return buf.toString();
+    }
+    /**
+     *android 7.0及以上 （3）通过busybox获取本地存储的mac地址
+     *
+     */
+
+    /**
+     * 根据busybox获取本地Mac
+     *
+     * @return
+     */
+    public static String getLocalMacAddressFromBusybox() {
+        String result = "";
+        String Mac = "";
+        result = callCmd("busybox ifconfig", "HWaddr");
+        // 如果返回的result == null，则说明网络不可取
+        if (result == null) {
+            return "网络异常";
+        }
+        // 对该行数据进行解析
+        // 例如：eth0 Link encap:Ethernet HWaddr 00:16:E8:3E:DF:67
+        if (result.length() > 0 && result.contains("HWaddr") == true) {
+            Mac = result.substring(result.indexOf("HWaddr") + 6,
+                    result.length() - 1);
+            result = Mac;
+        }
+        return result;
+    }
+
+    private static String callCmd(String cmd, String filter) {
+        String result = "";
+        String line = "";
+        try {
+            Process proc = Runtime.getRuntime().exec(cmd);
+            InputStreamReader is = new InputStreamReader(proc.getInputStream());
+            BufferedReader br = new BufferedReader(is);
+
+            while ((line = br.readLine()) != null
+                    && line.contains(filter) == false) {
+                result += line;
+            }
+
+            result = line;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return result;
+    }
 }
