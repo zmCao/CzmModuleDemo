@@ -1,6 +1,5 @@
 package com.czm.module.other;
 
-import android.content.Context;
 import android.net.wifi.WifiConfiguration;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
@@ -13,8 +12,8 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import com.czm.module.common.base.VantageBaseActivity;
-import com.czm.module.other.SetWifi.IPUtils2;
-import com.czm.module.other.SetWifi.WifiStaticIPUtil;
+import com.czm.module.other.SetIP.IPUtils2;
+import com.czm.module.other.SetIP.WifiStaticIPUtil;
 
 import java.lang.reflect.InvocationTargetException;
 import java.net.InetAddress;

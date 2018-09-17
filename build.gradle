@@ -31,6 +31,11 @@ allprojects {
     configurations.all {
         resolutionStrategy.cacheChangingModulesFor 0, 'minutes'
     }
+    gradle.projectsEvaluated {
+        tasks.withType(JavaCompile) {
+            options.compilerArgs.add('-Xbootclasspath/p:app/libs/framework.jar')
+        }
+    }
 }
 
 task clean(type: Delete) {

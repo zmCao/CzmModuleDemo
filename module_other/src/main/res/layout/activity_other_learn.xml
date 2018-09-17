@@ -27,4 +27,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="修改WIFI静态Ip" />
+    <Button
+        android:id="@+id/btn_changeIp1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="修改以太网静态Ip" />
 </LinearLayout>

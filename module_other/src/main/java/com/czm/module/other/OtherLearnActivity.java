@@ -34,6 +34,10 @@ public class OtherLearnActivity extends BaseActivity {
         btn_changeIp.setOnClickListener(v -> {
             gotoActivity(SetWifiIpActivity.class);
         });
+        Button btn_changeIp1=findViewById(R.id.btn_changeIp1);
+        btn_changeIp1.setOnClickListener(v -> {
+            gotoActivity(SetEthernetIpActivity.class);
+        });
     }
 
     @Override
