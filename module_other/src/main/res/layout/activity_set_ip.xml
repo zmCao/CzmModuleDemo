@@ -1,9 +1,43 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".SetIpActivity">
+    android:orientation="vertical"
+    tools:context=".SetWifiIpActivity">
+    <Button
+        android:id="@+id/aaa"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="设置WIFi IP(静态)" />
 
-</android.support.constraint.ConstraintLayout>
+    <Button
+        android:id="@+id/aaa2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="设置WIFi IP(DHCP)" />
+
+    <Button
+        android:id="@+id/aaa3"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="查看IP方法" />
+
+    <Button
+        android:id="@+id/aaa4"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="查看WIFI连接方式" />
+    <Button
+        android:id="@+id/aaa5"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="连接wifi" />
+
+    <Button
+        android:id="@+id/aaa6"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="6.0 WIFI静态Ip" />
+</LinearLayout>

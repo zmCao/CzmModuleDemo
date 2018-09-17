@@ -32,7 +32,7 @@ public class OtherLearnActivity extends BaseActivity {
         });
         Button btn_changeIp=findViewById(R.id.btn_changeIp);
         btn_changeIp.setOnClickListener(v -> {
-            gotoActivity(SetIpActivity.class);
+            gotoActivity(SetWifiIpActivity.class);
         });
     }
 
