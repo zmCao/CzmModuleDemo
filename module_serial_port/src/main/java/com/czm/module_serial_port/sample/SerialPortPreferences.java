@@ -43,7 +43,7 @@ public class SerialPortPreferences extends PreferenceActivity {
 
 		// Devices
 		final ListPreference devices = (ListPreference)findPreference("DEVICE");
-        String[] entries = mSerialPortFinder.getAllDevices();
+         String[] entries = mSerialPortFinder.getAllDevices();
         String[] entryValues = mSerialPortFinder.getAllDevicesPath();
 		devices.setEntries(entryValues);
 		devices.setEntryValues(entryValues);
