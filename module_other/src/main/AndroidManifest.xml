@@ -16,5 +16,6 @@
             android:windowSoftInputMode="stateAlwaysHidden"/>
         <activity android:name=".SetWifiIpActivity"/>
         <activity android:name=".SetEthernetIpActivity"/>
+        <activity android:name=".USBActivity"/>
     </application>
 </manifest>

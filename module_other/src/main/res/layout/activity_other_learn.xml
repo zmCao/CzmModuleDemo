@@ -32,4 +32,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="修改以太网静态Ip" />
+    <Button
+        android:id="@+id/btn_usb"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="USB读写" />
 </LinearLayout>

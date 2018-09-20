@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="com.czm.module.other"
-    android:sharedUserId="android.uid.system">
+    package="com.czm.module.other">
+    <!--android:sharedUserId="android.uid.system">-->
 
     <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" />
@@ -12,7 +12,7 @@
     <uses-permission android:name="android.permission.OVERRIDE_WIFI_CONFIG" />
     <uses-permission android:name="android.permission.WRITE_SETTINGS" />
     <uses-permission android:name="android.permission.WRITE_SECURE_SETTINGS" />
-
+    <uses-feature android:name="android.hardware.usb.host"/>
     <application
         android:name="debug.OtherApplication"
         android:allowBackup="true"
@@ -41,7 +41,19 @@
             android:theme="@style/zxing_CaptureTheme"
             android:windowSoftInputMode="stateAlwaysHidden" />
         <activity android:name=".SetWifiIpActivity" />
-        <activity android:name=".SetEthernetIpActivity"/>
+        <activity android:name=".SetEthernetIpActivity" />
+        <activity android:name=".USBActivity"/>
+        <!--<receiver android:name=".USBReceiver">-->
+            <!--<intent-filter>-->
+                <!--<action android:name="android.intent.action.BOOT_COMPLETED" />-->
+                <!--<action android:name="android.intent.action.MEDIA_REMOVED" />-->
+                <!--<action android:name="android.intent.action.MEDIA_MOUNTED" />-->
+                <!--<action android:name="android.intent.action.MEDIA_REMOVED" />-->
+                <!--<action android:name="android.intent.action.MEDIA_REMOVED" />-->
+
+                <!--<data android:scheme="file"></data>-->
+            <!--</intent-filter>-->
+        <!--</receiver>-->
     </application>
 
 </manifest>

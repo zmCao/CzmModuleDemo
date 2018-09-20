@@ -38,6 +38,10 @@ public class OtherLearnActivity extends BaseActivity {
         btn_changeIp1.setOnClickListener(v -> {
             gotoActivity(SetEthernetIpActivity.class);
         });
+        Button btn_usb=findViewById(R.id.btn_usb);
+        btn_usb.setOnClickListener(v -> {
+            gotoActivity(USBActivity.class);
+        });
     }
 
     @Override

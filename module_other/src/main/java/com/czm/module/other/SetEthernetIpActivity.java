@@ -22,6 +22,10 @@ import java.lang.reflect.InvocationTargetException;
 import java.net.Inet4Address;
 import java.net.InetAddress;
 
+/**
+ * 修改以太网静态IP
+ * 需要在 manifest节点下添加  <!--android:sharedUserId="android.uid.system">-->
+ */
 public class SetEthernetIpActivity extends VantageBaseActivity implements View.OnClickListener {
     private EthernetManager mEthManager;
     private static String mEthIpAddress = "192.168.1.247";  //IP
