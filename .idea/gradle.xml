@@ -9,6 +9,7 @@
           <set>
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/app" />
+            <option value="$PROJECT_DIR$/arcfacelibrary" />
             <option value="$PROJECT_DIR$/base_common" />
             <option value="$PROJECT_DIR$/module_customcontrol" />
             <option value="$PROJECT_DIR$/module_home" />

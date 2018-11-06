@@ -35,7 +35,7 @@ public class BaseApplication extends Application {
         super.onCreate();
         sInstance = this;
         FormatStrategy formatStrategy = PrettyFormatStrategy.newBuilder()
-                .tag("BrightHome")
+                .tag("CzmModuleDemo")
                 .build();
         Logger.addLogAdapter(new AndroidLogAdapter(formatStrategy) {
             @Override

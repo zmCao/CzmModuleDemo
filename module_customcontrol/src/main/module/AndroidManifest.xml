@@ -19,6 +19,8 @@
         </activity>
         <activity
             android:name=".CustomControlLearnActivity"/>
+        <activity
+            android:name=".ui_1_1.UI_1_1_Activity"/>
     </application>
 
 </manifest>

@@ -2,24 +2,31 @@ package com.czm.module.customcontrol;
 
 import android.os.Bundle;
 import android.view.KeyEvent;
+import android.view.View;
+import android.widget.Button;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.czm.module.common.base.BaseActivity;
 import com.czm.module.common.base.ViewManager;
 import com.czm.module.common.utils.ToastUtils;
 import com.czm.module.common.utils.Utils;
+import com.czm.module.customcontrol.ui_1_1.UI_1_1_Activity;
 
 @Route(path = "/customcontrol/CustomControlLearnActivity")
-public class CustomControlLearnActivity extends BaseActivity {
+public class CustomControlLearnActivity extends BaseActivity implements View.OnClickListener {
 
     private long mExitTime;
+    private Button btn_1_1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_custom_control_learn);
+        btn_1_1 = findViewById(R.id.btn_1_1);
+        btn_1_1.setOnClickListener(this);
 
     }
+
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK && event.getAction() == KeyEvent.ACTION_DOWN) {
@@ -33,5 +40,14 @@ public class CustomControlLearnActivity extends BaseActivity {
             return true;
         }
         return super.onKeyDown(keyCode, event);
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.btn_1_1:
+                gotoActivity(UI_1_1_Activity.class);
+                break;
+        }
     }
 }

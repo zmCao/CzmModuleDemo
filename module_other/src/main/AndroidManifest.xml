@@ -17,5 +17,6 @@
         <activity android:name=".SetWifiIpActivity"/>
         <activity android:name=".SetEthernetIpActivity"/>
         <activity android:name=".USBActivity"/>
+        <activity android:name=".DpiActivity"/>
     </application>
 </manifest>

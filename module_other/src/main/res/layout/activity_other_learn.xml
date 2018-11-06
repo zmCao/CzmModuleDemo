@@ -3,7 +3,11 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
-
+    <Button
+        android:id="@+id/btn_dpi"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="分辨率测试" />
     <Button
         android:id="@+id/btn_notice_board_matches"
         android:layout_width="match_parent"

@@ -42,6 +42,10 @@ public class OtherLearnActivity extends BaseActivity {
         btn_usb.setOnClickListener(v -> {
             gotoActivity(USBActivity.class);
         });
+        Button btn_dpi=findViewById(R.id.btn_dpi);
+        btn_dpi.setOnClickListener(v -> {
+            gotoActivity(DpiActivity.class);
+        });
     }
 
     @Override
