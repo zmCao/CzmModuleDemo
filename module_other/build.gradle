@@ -50,6 +50,7 @@ dependencies {
     implementation 'com.android.support.constraint:constraint-layout:1.0.2'
     annotationProcessor deps.arouter_compiler
     implementation project(':base_common')
+    implementation project(':zkfingerlibrary')
     implementation 'com.google.zxing:core:3.3.0'      //zxing核心依赖
     implementation 'com.journeyapps:zxing-android-embedded:3.6.0'  //生成二维码依赖
 }

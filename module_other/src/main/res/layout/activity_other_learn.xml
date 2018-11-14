@@ -41,4 +41,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="USB读写" />
+    <Button
+        android:id="@+id/btn_zk_finger"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="中控指纹DEMO" />
 </LinearLayout>

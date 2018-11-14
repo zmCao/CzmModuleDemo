@@ -46,6 +46,14 @@
         <activity android:name=".SetWifiIpActivity" />
         <activity android:name=".SetEthernetIpActivity" />
         <activity android:name=".USBActivity" />
+        <activity android:name=".finger.ZKFingerActivity" >
+            <intent-filter>
+                <action android:name="android.hardware.usb.action.USB_DEVICE_ATTACHED" />
+            </intent-filter>
+            <meta-data
+                android:name="android.hardware.usb.action.USB_DEVICE_ATTACHED"
+                android:resource="@xml/device_filter" />
+        </activity>
         <!-- <receiver android:name=".USBReceiver"> -->
         <!-- <intent-filter> -->
         <!-- <action android:name="android.intent.action.BOOT_COMPLETED" /> -->

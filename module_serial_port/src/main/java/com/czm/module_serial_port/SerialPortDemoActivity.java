@@ -23,8 +23,8 @@ public class SerialPortDemoActivity extends AppCompatActivity implements View.On
     private static final String TAG = "MainActivity";
     private SerialUtil serialUtil;
     //    private String path="/dev/ttyUSB9";
-    private String path = "/dev/ttyS4";
-    private int baudrate = 115200;
+    private String path = "/dev/ttys1";
+    private int baudrate = 57600;
     private int flags = 0;
 
     @Override

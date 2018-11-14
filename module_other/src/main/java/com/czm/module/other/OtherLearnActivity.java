@@ -9,6 +9,7 @@ import com.czm.module.common.base.BaseActivity;
 import com.czm.module.common.base.ViewManager;
 import com.czm.module.common.utils.ToastUtils;
 import com.czm.module.common.utils.Utils;
+import com.czm.module.other.finger.ZKFingerActivity;
 
 @Route(path = "/other/OtherLearnActivity")
 public class OtherLearnActivity extends BaseActivity {
@@ -45,6 +46,10 @@ public class OtherLearnActivity extends BaseActivity {
         Button btn_dpi=findViewById(R.id.btn_dpi);
         btn_dpi.setOnClickListener(v -> {
             gotoActivity(DpiActivity.class);
+        });
+        Button btn_zk_finger=findViewById(R.id.btn_zk_finger);
+        btn_zk_finger.setOnClickListener(v -> {
+            gotoActivity(ZKFingerActivity.class);
         });
     }
 
