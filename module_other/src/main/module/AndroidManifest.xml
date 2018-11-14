@@ -46,7 +46,8 @@
         <activity android:name=".SetWifiIpActivity" />
         <activity android:name=".SetEthernetIpActivity" />
         <activity android:name=".USBActivity" />
-        <activity android:name=".finger.ZKFingerActivity" >
+        <activity android:name=".finger.ZKFingerActivity"
+            android:launchMode="singleTask">
             <intent-filter>
                 <action android:name="android.hardware.usb.action.USB_DEVICE_ATTACHED" />
             </intent-filter>

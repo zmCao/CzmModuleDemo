@@ -108,7 +108,7 @@ public class ZKFingerActivity extends AppCompatActivity {
             }
         });
         if (verifyRet)
-            textView.setText("初始化成功，请录入3次指纹");
+            textView.setText("指纹验证初始化成功");
         else
             textView.setText("请先开启设备捕获功能");
     }
