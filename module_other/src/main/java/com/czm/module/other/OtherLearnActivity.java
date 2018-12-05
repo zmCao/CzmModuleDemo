@@ -11,6 +11,8 @@ import com.czm.module.common.utils.ToastUtils;
 import com.czm.module.common.utils.Utils;
 import com.czm.module.other.finger.ZKFingerActivity;
 
+import java.io.IOException;
+
 @Route(path = "/other/OtherLearnActivity")
 public class OtherLearnActivity extends BaseActivity {
 
@@ -27,29 +29,44 @@ public class OtherLearnActivity extends BaseActivity {
         btn_bga_refreshlayout.setOnClickListener(v -> {
 
         });
-        Button btn_zxing=findViewById(R.id.btn_zxing);
+        Button btn_zxing = findViewById(R.id.btn_zxing);
         btn_zxing.setOnClickListener(v -> {
             gotoActivity(ZXingTestActivity.class);
         });
-        Button btn_changeIp=findViewById(R.id.btn_changeIp);
+        Button btn_changeIp = findViewById(R.id.btn_changeIp);
         btn_changeIp.setOnClickListener(v -> {
             gotoActivity(SetWifiIpActivity.class);
         });
-        Button btn_changeIp1=findViewById(R.id.btn_changeIp1);
+        Button btn_changeIp1 = findViewById(R.id.btn_changeIp1);
         btn_changeIp1.setOnClickListener(v -> {
             gotoActivity(SetEthernetIpActivity.class);
         });
-        Button btn_usb=findViewById(R.id.btn_usb);
+        Button btn_usb = findViewById(R.id.btn_usb);
         btn_usb.setOnClickListener(v -> {
             gotoActivity(USBActivity.class);
         });
-        Button btn_dpi=findViewById(R.id.btn_dpi);
+        Button btn_dpi = findViewById(R.id.btn_dpi);
         btn_dpi.setOnClickListener(v -> {
             gotoActivity(DpiActivity.class);
         });
-        Button btn_zk_finger=findViewById(R.id.btn_zk_finger);
+        Button btn_zk_finger = findViewById(R.id.btn_zk_finger);
         btn_zk_finger.setOnClickListener(v -> {
             gotoActivity(ZKFingerActivity.class);
+        });
+        Button btn_base4toimg = findViewById(R.id.btn_base4toimg);
+        btn_zk_finger.setOnClickListener(v -> {
+            gotoActivity(ZKFingerActivity.class);
+        });
+
+        Button btn_reboot = findViewById(R.id.btn_reboot);
+        btn_reboot.setOnClickListener(v -> {
+
+            String cmd = "su -c reboot";
+            try {
+                Runtime.getRuntime().exec(cmd);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         });
     }
 

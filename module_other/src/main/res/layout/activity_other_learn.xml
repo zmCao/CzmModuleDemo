@@ -4,6 +4,11 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
     <Button
+        android:id="@+id/btn_reboot"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="重启设备" />
+    <Button
         android:id="@+id/btn_dpi"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -46,4 +51,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="中控指纹DEMO" />
+    <Button
+        android:id="@+id/btn_base4toimg"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="BASE64转图片" />
 </LinearLayout>
