@@ -8,6 +8,7 @@ import android.os.Handler;
 import com.czm.module.common.base.BaseActivity;
 import com.czm.module.common.utils.ToastUtils;
 import com.czm.module_serial_port.R;
+import com.czm.module_serial_port.SerialPortDemoActivity;
 import com.czm.module_serial_port.SerialPortLearnActivity;
 
 public class LauncherActivity extends BaseActivity {
@@ -33,7 +34,7 @@ public class LauncherActivity extends BaseActivity {
         super.onResume();
         ToastUtils.showLongToast(R.string.app_name);
         new Handler().postDelayed(() -> {
-            gotoActivity(SerialPortLearnActivity.class);
+            gotoActivity(SerialPortDemoActivity.class);
             finish();
         }, 2000);
     }

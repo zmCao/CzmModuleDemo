@@ -6,6 +6,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -20,12 +21,15 @@ public class SerialPortDemoActivity extends AppCompatActivity implements View.On
     private Button stop_b;
     private ReadThread readThread;
     private int size = -1;
-    private static final String TAG = "MainActivity";
+    private static final String TAG = "SerialPortDemoActivity";
     private SerialUtil serialUtil;
     //    private String path="/dev/ttyUSB9";
-    private String path = "/dev/ttys1";
-    private int baudrate = 57600;
+    private String path = "/dev/ttyS4";
+    //    private int baudrate = 57600;
+    private int baudrate = 115200;
     private int flags = 0;
+    private EditText edt_ck, edt_btl;
+    private RadioButton rBtn_string, rBtn_hex;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,6 +53,10 @@ public class SerialPortDemoActivity extends AppCompatActivity implements View.On
         receive_b.setOnClickListener(this);
         sendt_b.setOnClickListener(this);
         stop_b.setOnClickListener(this);
+        edt_ck = findViewById(R.id.edt_ck);
+        edt_btl = findViewById(R.id.edt_btl);
+        rBtn_hex = findViewById(R.id.rBtn_hex);
+        rBtn_string = findViewById(R.id.rBtn_string);
         try {
             //设置串口号、波特率，
             serialUtil = new SerialUtil(path, baudrate, 0);
@@ -56,7 +64,8 @@ public class SerialPortDemoActivity extends AppCompatActivity implements View.On
             Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
             e.printStackTrace();
         }
-
+        path = edt_ck.getText().toString();
+        baudrate = Integer.parseInt(edt_btl.getText().toString());
     }
 
     @Override
@@ -72,8 +81,13 @@ public class SerialPortDemoActivity extends AppCompatActivity implements View.On
             try {
                 //serialUtil.setData(SerialUtil.hexStringToBytes(SerialUtil.bytesToHexString(context.getBytes(), context.getBytes().length) + "0d0a"));
 //                    context = context.replace("\r","\n").replace("\n","\r\n").replace("\\r\\n","\r\n");
-
-                serialUtil.setData(SerialUtil.hexStringToBytes(context));
+                byte[] sendBytes = null;
+                if (rBtn_string.isChecked()) {
+                    sendBytes = context.getBytes();
+                } else if (rBtn_hex.isChecked()) {
+                    sendBytes = SerialUtil.hexStringToBytes(context);
+                }
+                serialUtil.setData(sendBytes);
             } catch (NullPointerException e) {
                 Toast.makeText(this, "串口设置有误，无法发送", Toast.LENGTH_SHORT).show();
                 e.printStackTrace();
@@ -96,10 +110,15 @@ public class SerialPortDemoActivity extends AppCompatActivity implements View.On
                 try {
                     byte[] data = serialUtil.getDataByte();
                     if (data != null) {
-                        String s=new String(data);
+                        String s = new String(data);
                         String sRec = SerialUtil.bytesToHexString(data, data.length);
-                        onDataReceived(s);
+                        if (rBtn_hex.isChecked()) {
+                            onDataReceived(sRec);
+                        } else if (rBtn_string.isChecked()) {
+                            onDataReceived(s);
+                        }
                     }
+                    Thread.sleep(200);
                 } catch (NullPointerException e) {
                     onDataReceived("-1");
                     e.printStackTrace();
@@ -120,9 +139,9 @@ public class SerialPortDemoActivity extends AppCompatActivity implements View.On
             public void run() {
                 //显示出来
                 if ("-1".equals(data)) {
-                    Toast.makeText(SerialPortDemoActivity.this, "串口设置有误，无法接收", Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(SerialPortDemoActivity.this, "串口设置有误，无法接收", Toast.LENGTH_SHORT).show();
                 } else {
-                    receive_tv.append(data);
+                    receive_tv.append(data + "\n");
                 }
             }
         });

@@ -7,7 +7,7 @@ if (isModule.toBoolean()) {
 android {
     compileSdkVersion build_versions.target_sdk
     defaultConfig {
-        minSdkVersion build_versions.min_sdk
+        minSdkVersion 19
         targetSdkVersion 22
         versionCode 1
         versionName "1.0"

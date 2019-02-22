@@ -1,6 +1,8 @@
 package com.czm.module.other;
 
+import android.content.Context;
 import android.os.Bundle;
+import android.os.PowerManager;
 import android.view.KeyEvent;
 import android.widget.Button;
 
@@ -61,12 +63,14 @@ public class OtherLearnActivity extends BaseActivity {
         Button btn_reboot = findViewById(R.id.btn_reboot);
         btn_reboot.setOnClickListener(v -> {
 
-            String cmd = "su -c reboot";
-            try {
-                Runtime.getRuntime().exec(cmd);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+//            String cmd = "su -c reboot";
+//            try {
+//                Runtime.getRuntime().exec(cmd);
+//            } catch (IOException e) {
+//                e.printStackTrace();
+//            }
+            PowerManager pManager=(PowerManager) getSystemService(Context.POWER_SERVICE);
+            pManager.reboot("重启");
         });
     }
 
