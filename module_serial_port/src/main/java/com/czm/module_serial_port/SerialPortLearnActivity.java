@@ -27,7 +27,6 @@ public class SerialPortLearnActivity extends BaseActivity {
         Button btn_Demo = findViewById(R.id.btn_Demo);
         btn_Demo.setOnClickListener(v -> {
             gotoActivity(SerialPortDemoActivity.class);
-
         });
     }
 

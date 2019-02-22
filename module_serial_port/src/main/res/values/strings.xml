@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">module_serial_port</string>
+    <string name="app_name">串口调试工具</string>
     <string name="app_exit_hint">再按一次退出程序</string>
 
     <string name="about_msg">
