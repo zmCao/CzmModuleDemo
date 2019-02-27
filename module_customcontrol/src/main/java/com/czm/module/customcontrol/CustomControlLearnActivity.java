@@ -44,10 +44,10 @@ public class CustomControlLearnActivity extends BaseActivity implements View.OnC
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.btn_1_1:
-                gotoActivity(UI_1_1_Activity.class);
-                break;
+        int i = v.getId();
+        if (i == R.id.btn_1_1) {
+            gotoActivity(UI_1_1_Activity.class);
+
         }
     }
 }

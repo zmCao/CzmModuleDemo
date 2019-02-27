@@ -5,29 +5,40 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context=".MainActivity">
+
     <Button
         android:id="@+id/btnCustomControlDemo"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="自定义控件学习"/>
+        android:text="自定义控件学习" />
+
     <Button
         android:id="@+id/btnGreenDaoDemo"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="GreenDaoDemo"/>
+        android:text="GreenDaoDemo" />
+
     <Button
         android:id="@+id/btnNetty"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Netty"/>
+        android:text="Netty" />
+
     <Button
         android:id="@+id/btnOther"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Other"/>
+        android:text="Other" />
+
     <Button
         android:id="@+id/btnSerialPort"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="串口通讯"/>
+        android:text="串口通讯" />
+
+    <Button
+        android:id="@+id/btnAudioVideo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="音视频" />
 </LinearLayout>

@@ -22,5 +22,7 @@ public class  MainActivity extends BaseActivity {
         btnOther.setOnClickListener(v -> ARouter.getInstance().build("/other/OtherLearnActivity").navigation());
         Button btnSerialPort=findViewById(R.id.btnSerialPort);
         btnSerialPort.setOnClickListener(v -> ARouter.getInstance().build("/port/SerialPortLearnActivity").navigation());
+        Button btnAudioVideo=findViewById(R.id.btnAudioVideo);
+        btnAudioVideo.setOnClickListener(v -> ARouter.getInstance().build("/module_audio_video/VideoLearnActivity").navigation());
     }
 }

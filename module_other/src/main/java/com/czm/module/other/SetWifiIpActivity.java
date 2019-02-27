@@ -79,87 +79,82 @@ public class SetWifiIpActivity extends VantageBaseActivity {
         @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
         @Override
         public void onClick(View view) {
-            switch (view.getId()) {
-                case R.id.aaa:
+            int i = view.getId();
+            if (i == R.id.aaa) {//IP 网络前缀长度24 DNS1域名1 网关
+                Boolean b = s.setIpWithTfiStaticIp(false, "192.168.1.235", 24, "255.255.255.0", "192.168.1.1");
+                Toast.makeText(SetWifiIpActivity.this, "" + b, Toast.LENGTH_SHORT).show();
 
-                    //IP 网络前缀长度24 DNS1域名1 网关
-                    Boolean b = s.setIpWithTfiStaticIp(false, "192.168.1.235", 24, "255.255.255.0", "192.168.1.1");
-                    Toast.makeText(SetWifiIpActivity.this, "" + b, Toast.LENGTH_SHORT).show();
-                    break;
-                case R.id.aaa2:
-                    //IP 网络前缀长度24 DNS1域名1 网关
-                    Boolean c = s.setIpWithTfiStaticIp(true, "192.168.1.235", 24, "255.255.255.0", "192.168.1.1");
-                    Toast.makeText(SetWifiIpActivity.this, "" + c, Toast.LENGTH_SHORT).show();
+            } else if (i == R.id.aaa2) {//IP 网络前缀长度24 DNS1域名1 网关
+                Boolean c = s.setIpWithTfiStaticIp(true, "192.168.1.235", 24, "255.255.255.0", "192.168.1.1");
+                Toast.makeText(SetWifiIpActivity.this, "" + c, Toast.LENGTH_SHORT).show();
 
-                    break;
-                case R.id.aaa3:
-                    WifiInfo w = mwifiManager.getConnectionInfo();
-                    String ip = IPUtils2.intToIp(w.getIpAddress());
-                    Log.e("IP", ip);
-                    Toast.makeText(SetWifiIpActivity.this, ip, Toast.LENGTH_SHORT).show();
-                    break;
-                case R.id.aaa4:
-                    Toast.makeText(SetWifiIpActivity.this, s.getWifiSetting(SetWifiIpActivity.this), Toast.LENGTH_SHORT).show();
-                    break;
-                case R.id.aaa5:
-                    String ssid = "OpenWrt_2.4G";
-                    String password = "wh20001222";
-                    //检测指定SSID的WifiConfiguration 是否存在
-                    WifiConfiguration tempConfig = s.IsExsits(ssid);
-                    if (tempConfig == null) {
-                        mWifiConfiguration = s.CreateWifiInfo(ssid, password, 3);
-                        int wcgID = mwifiManager.addNetwork(mWifiConfiguration);
-                        boolean bbb = mwifiManager.enableNetwork(wcgID, true);
-                    } else {//发现指定WiFi，并且这个WiFi以前连接成功过
-                        mWifiConfiguration = tempConfig;
-                        boolean bbb = mwifiManager.enableNetwork(mWifiConfiguration.networkId, true);
-                    }
-                    break;
 
-                case R.id.aaa6:
-                    try {
-                        WifiInfo connectionInfo = mwifiManager.getConnectionInfo();  //得到连接的wifi网络
+            } else if (i == R.id.aaa3) {
+                WifiInfo w = mwifiManager.getConnectionInfo();
+                String ip = IPUtils2.intToIp(w.getIpAddress());
+                Log.e("IP", ip);
+                Toast.makeText(SetWifiIpActivity.this, ip, Toast.LENGTH_SHORT).show();
 
-                        List<WifiConfiguration> configuredNetworks = mwifiManager
-                                .getConfiguredNetworks();
-                        for (WifiConfiguration conf : configuredNetworks) {
-                            if (conf.networkId == connectionInfo.getNetworkId()) {
-                                mWifiConfiguration = conf;
-                                break;
-                            }
+            } else if (i == R.id.aaa4) {
+                Toast.makeText(SetWifiIpActivity.this, s.getWifiSetting(SetWifiIpActivity.this), Toast.LENGTH_SHORT).show();
 
+            } else if (i == R.id.aaa5) {
+                String ssid = "OpenWrt_2.4G";
+                String password = "wh20001222";
+                //检测指定SSID的WifiConfiguration 是否存在
+                WifiConfiguration tempConfig = s.IsExsits(ssid);
+                if (tempConfig == null) {
+                    mWifiConfiguration = s.CreateWifiInfo(ssid, password, 3);
+                    int wcgID = mwifiManager.addNetwork(mWifiConfiguration);
+                    boolean bbb = mwifiManager.enableNetwork(wcgID, true);
+                } else {//发现指定WiFi，并且这个WiFi以前连接成功过
+                    mWifiConfiguration = tempConfig;
+                    boolean bbb = mwifiManager.enableNetwork(mWifiConfiguration.networkId, true);
+                }
+
+            } else if (i == R.id.aaa6) {
+                try {
+                    WifiInfo connectionInfo = mwifiManager.getConnectionInfo();  //得到连接的wifi网络
+
+                    List<WifiConfiguration> configuredNetworks = mwifiManager
+                            .getConfiguredNetworks();
+                    for (WifiConfiguration conf : configuredNetworks) {
+                        if (conf.networkId == connectionInfo.getNetworkId()) {
+                            mWifiConfiguration = conf;
+                            break;
                         }
-                        IPUtils2.setStaticIpConfiguration(mwifiManager, mWifiConfiguration,
-                                InetAddress.getByName("106.168.1.235"), 24,
-                                InetAddress.getByName("192.168.1.1"),
-                                InetAddress.getAllByName("8.8.8.8"));
-                    } catch (ClassNotFoundException e) {
-                        // TODO Auto-generated catch block
-                        e.printStackTrace();
-                    } catch (IllegalAccessException e) {
-                        // TODO Auto-generated catch block
-                        e.printStackTrace();
-                    } catch (IllegalArgumentException e) {
-                        // TODO Auto-generated catch block
-                        e.printStackTrace();
-                    } catch (InvocationTargetException e) {
-                        // TODO Auto-generated catch block
-                        e.printStackTrace();
-                    } catch (NoSuchMethodException e) {
-                        // TODO Auto-generated catch block
-                        e.printStackTrace();
-                    } catch (NoSuchFieldException e) {
-                        // TODO Auto-generated catch block
-                        e.printStackTrace();
-                    } catch (InstantiationException e) {
-                        // TODO Auto-generated catch block
-                        e.printStackTrace();
-                    } catch (UnknownHostException e) {
-                        // TODO Auto-generated catch block
-                        e.printStackTrace();
-                    }
 
-                    break;
+                    }
+                    IPUtils2.setStaticIpConfiguration(mwifiManager, mWifiConfiguration,
+                            InetAddress.getByName("106.168.1.235"), 24,
+                            InetAddress.getByName("192.168.1.1"),
+                            InetAddress.getAllByName("8.8.8.8"));
+                } catch (ClassNotFoundException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                } catch (IllegalAccessException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                } catch (IllegalArgumentException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                } catch (InvocationTargetException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                } catch (NoSuchMethodException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                } catch (NoSuchFieldException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                } catch (InstantiationException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                } catch (UnknownHostException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
+
 
             }
         }

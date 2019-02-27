@@ -1,4 +1,4 @@
-include ':app', ':arcfacelibrary', ':zkfingerlibrary',
+include ':app', ':arcfacelibrary', ':zkfingerlibrary', ':module_audio_video',
 //        ':module_greendao',
         ':module_netty',
         ':module_other',
