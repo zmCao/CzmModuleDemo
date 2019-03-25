@@ -5,15 +5,12 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
     <!-- 显示视频预览的SurfaceView -->
-    <SurfaceView
-        android:id="@+id/sView"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" />
 
-    <SurfaceView
-        android:id="@+id/mView"
-        android:layout_width="130dp"
-        android:layout_height="200dp" />
+    <FrameLayout
+        android:id="@+id/layout_aspect"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_centerInParent="true" />
 
 
     <Button

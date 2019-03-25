@@ -1,16 +1,26 @@
 package com.czm.module_audio_video;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.ImageFormat;
+import android.graphics.Rect;
+import android.graphics.YuvImage;
 import android.hardware.Camera;
 import android.os.Bundle;
+import android.os.Environment;
 import android.util.Log;
 import android.view.SurfaceView;
 import android.view.View;
 import android.widget.Button;
+import android.widget.FrameLayout;
 
 import com.czm.module.common.base.BaseActivity;
 import com.czm.module.module_audio_video.R;
+import com.czm.module_audio_video.camera.CameraSurfaceView;
+import com.czm.module_audio_video.camera.CameraUtils;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
@@ -20,7 +30,7 @@ import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.List;
 
-public class VideoStreamingActivity extends BaseActivity implements View.OnClickListener, Camera.PreviewCallback {
+public class VideoStreamingActivity extends BaseActivity implements View.OnClickListener {
     private static final String TAG = "VideoStreamingActivity";
 
     //这里是为了发送视频到vlc客户端进行测试。
@@ -34,22 +44,21 @@ public class VideoStreamingActivity extends BaseActivity implements View.OnClick
     Button record;
     //切换前后摄像头按钮
     Button change;
-
-    // 显示视频预览的SurfaceView
-    SurfaceView sView, mView;
     // 记录是否正在进行录制
     private boolean isRecording = false;
     private Camera mCamera;
-    private int cameraPosition = 0;//1代表前置摄像头，0代表后置摄像头
-    private int displayOrientation = 90;//相机预览方向，默认是横屏的，旋转90度为竖屏
     //视频采集分辨率
-    int width = 320;
-    int height = 240;
+    int width = 1280;
+    int height = 720;
     byte[] h264;//接收H264
     //h264硬编码器
     AvcEncoder avcEncoder;
     //h264硬解码器
-    AvcDecode avcDecode;
+//    AvcDecode avcDecode;
+    private CameraSurfaceView mCameraSurfaceView;
+    // CameraSurfaceView 容器包装类
+    private FrameLayout mAspectLayout;
+    private int mOrientation;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,20 +78,13 @@ public class VideoStreamingActivity extends BaseActivity implements View.OnClick
         // 为两个按钮的单击事件绑定监听器
         record.setOnClickListener(this);
         change.setOnClickListener(this);
-
-        // 获取程序界面中的大预览SurfaceView
-        sView = (SurfaceView) this.findViewById(R.id.sView);
-        // 设置分辨率
-        sView.getHolder().setFixedSize(width, height);
-        // 设置该组件让屏幕不会自动关闭
-        sView.getHolder().setKeepScreenOn(true);
-
-        // 获取程序界面中的小的预览SurfaceView
-        mView = (SurfaceView) this.findViewById(R.id.mView);
-        // 设置分辨率
-        mView.getHolder().setFixedSize(width, height);
-
-
+        mAspectLayout = (FrameLayout) findViewById(R.id.layout_aspect);
+        CameraUtils.setDefaultHeight(height);
+        CameraUtils.setDefaultWidth(width);
+        mCameraSurfaceView = new CameraSurfaceView(this);
+        mCameraSurfaceView.setBackgroundResource(R.color.transparent);
+        mAspectLayout.addView(mCameraSurfaceView);
+       // mOrientation = CameraUtils.calculateCameraPreviewOrientation(VideoStreamingActivity.this);
         //-------------启动发送数据线程-----------------
         netSendTask = new UdpSendTask();
         netSendTask.init();
@@ -92,125 +94,69 @@ public class VideoStreamingActivity extends BaseActivity implements View.OnClick
     @Override
     public void onClick(View v) {
         if (v.getId() == R.id.record) {
-            initCameara();
-        }
-//        switch (v.getId()) {
-//            // 单击录制按钮
-//            case R.id.record:
-//                initCameara();
-//                break;
-//            case R.id.change:
-//                //切换摄像头
-//                change();
-//                break;
-//        }
-    }
-
-    //初始化相机
-    private void initCameara() {
-        try {
-            mCamera = Camera.open(cameraPosition);
-            mCamera.setPreviewDisplay(mView.getHolder());
-            //设置预览方向
-            mCamera.setDisplayOrientation(displayOrientation);
-
-
-            //获取相机配置参数
-            Camera.Parameters parameters = mCamera.getParameters();
-
-            //这里只是打印摄像头支持的分辨率，实际对程序没有作用，可以删除
-            List<Camera.Size> supportedPreviewSizes = parameters
-                    .getSupportedPreviewSizes();
-            for (Camera.Size s : supportedPreviewSizes
-                    ) {
-                Log.v(TAG, s.width + "----" + s.height);
-            }
-
-            parameters.setFlashMode("off"); // 无闪光灯
-            parameters.setPreviewFormat(ImageFormat.NV21); //设置采集视频的格式，默认为NV21,注意，相机预览只支持NV21和YV12两种格式，其他格式会花屏
-            parameters.setPreviewFrameRate(10);//设置帧率
-            parameters.setPreviewSize(width, height);//设置分辨率
-            parameters.setPictureSize(width, height);
-
-            mCamera.setParameters(parameters); // 将Camera.Parameters设定予Camera
-
-            //设置预览回调
-            mCamera.setPreviewCallback((Camera.PreviewCallback) this);
-            mCamera.startPreview();
-
-            //开始采集让摄像头切换按钮可用
-            change.setEnabled(true);
             //变成红色
             change.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
-
             //初始化视频编解码器
             avcEncoder = new AvcEncoder(width, height, 10, 125000);
-            avcDecode = new AvcDecode(width, height, sView.getHolder().getSurface());
-
-
-        } catch (Exception e) {
-            Log.i("jw", "camera error:" + Log.getStackTraceString(e));
+            getPreViewImage();
+        } else if (v.getId() == R.id.change) {
+            switchCamera();
         }
-
     }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        CameraUtils.startPreview();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        CameraUtils.stopPreview();
+    }
+
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        destroyCamera();
         isRecording = false;
     }
 
-    private void destroyCamera() {
-        if (mCamera == null) {
-            return;
+    /**
+     * 切换相机
+     */
+    private void switchCamera() {
+        if (mCameraSurfaceView != null) {
+            CameraUtils.switchCamera(1 - CameraUtils.getCameraID(), mCameraSurfaceView.getHolder());
+            // 切换相机后需要重新计算旋转角度
+            mOrientation = CameraUtils.calculateCameraPreviewOrientation(VideoStreamingActivity.this);
         }
-        //！！这个必须在前，不然退出出错
-        mCamera.setPreviewCallback(null);
-        mCamera.stopPreview();
-        mCamera.release();
-        mCamera = null;
     }
 
-    //切换前后摄像头
-    public void change() {
-        //切换前后摄像头
-        Camera.CameraInfo cameraInfo = new Camera.CameraInfo();
-        for (int i = 0; i < Camera.getNumberOfCameras(); i++) {
-            Camera.getCameraInfo(i, cameraInfo);
-
-            if (cameraPosition == 1) {
-                if (cameraInfo.facing == Camera.CameraInfo.CAMERA_FACING_FRONT) {
-                    displayOrientation = 90;
-                    cameraPosition = 0;
-                    break;
-                }
-            } else {
-                if (cameraInfo.facing == Camera.CameraInfo.CAMERA_FACING_BACK) {
-                    displayOrientation = 90;
-                    cameraPosition = 1;
-                    break;
+    /**
+     * 取帧图片
+     */
+    private void getPreViewImage() {
+        CameraUtils.getPreViewImage(new Camera.PreviewCallback() {
+            @Override
+            public void onPreviewFrame(byte[] data, Camera camera) {
+                h264=new byte[data.length];
+                try {
+                    if (isRecording) {
+                        //摄像头数据转h264
+                        int ret = avcEncoder.offerEncoder(data, h264);
+                        if (ret > 0) {
+                            //发送h264到vlc
+//                            send(h264, "192.168.1.205");
+                            netSendTask.pushBuf(h264, ret);
+                        }
+                    } else isRecording = true;
+                } catch (Exception ex) {
+                    ex.printStackTrace();
                 }
             }
-        }
-        destroyCamera();
-        initCameara();
-    }
-
-    @Override
-    public void onPreviewFrame(byte[] data, Camera camera) {
-        try {
-            if (isRecording) {
-                //摄像头数据转h264
-                int ret = avcEncoder.offerEncoder(data, h264);
-                if (ret > 0) {
-                    //发送h264到vlc
-                    netSendTask.pushBuf(h264, ret);
-                }
-            } else isRecording = true;
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
+        });
     }
 
     //发送数据的线程
@@ -221,7 +167,7 @@ public class VideoStreamingActivity extends BaseActivity implements View.OnClick
             try {
                 socket = new DatagramSocket();
                 //设置IP
-                address = InetAddress.getByName("192.168.1.205");
+                address = InetAddress.getByName("192.168.1.191");
             } catch (SocketException e) {
                 e.printStackTrace();
             } catch (UnknownHostException e) {
@@ -256,7 +202,7 @@ public class VideoStreamingActivity extends BaseActivity implements View.OnClick
 
                         //发送数据到指定地址
                         Log.d(TAG, "send udp packet len:" + sendBuf.capacity());
-                        DatagramPacket packet = new DatagramPacket(sendBuf.array(), sendBuf.capacity(), address, 5000);
+                        DatagramPacket packet = new DatagramPacket(sendBuf.array(), sendBuf.capacity(), address, 8080);
 
                         socket.send(packet);
                     } catch (Throwable t) {
@@ -267,5 +213,32 @@ public class VideoStreamingActivity extends BaseActivity implements View.OnClick
                 }
             }
         }
+    }
+    public void send(final byte[] ml, final String sIP) {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                DatagramSocket s = null;
+                try {
+                    s = new DatagramSocket();
+                } catch (SocketException e) {
+                    e.printStackTrace();
+                }
+                InetAddress local = null;
+                try {
+                    local = InetAddress.getByName(sIP);
+                } catch (UnknownHostException e) {
+                    e.printStackTrace();
+                }
+                DatagramPacket p = new DatagramPacket(ml, ml.length, local, 80);
+                try {
+                    Log.d(TAG, "send udp packet len:" + ml.length);
+                    s.send(p);
+                    s.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }).start();
     }
 }
