@@ -55,7 +55,10 @@ public class ZKFingerActivity extends AppCompatActivity {
                         ",Internal error code: " + e.getInternalErrorCode() + ",message=" + e.getMessage());
             }
 
-
+            @Override
+            public void sensorOpenSuccess() {
+                textView.setText("指纹设备打开成功");
+            }
         });
     }
 

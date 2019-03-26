@@ -104,6 +104,7 @@ public class ZKDeviceUtil {
         try {
             if (bstart) {
                 LogHelper.e("指纹设备已开启");
+                captureCallback.sensorOpenSuccess();
                 return;
             }
             this.captureCallback = captureCallback;
@@ -113,6 +114,7 @@ public class ZKDeviceUtil {
             fingerprintSensor.startCapture(0);
             fingerprintSensor.setFingerprintCaptureMode(0, FingerprintCaptureListener.MODE_CAPTURE_TEMPLATEANDIMAGE);
             bstart = true;
+            captureCallback.sensorOpenSuccess();
         } catch (FingerprintSensorException e) {
             captureCallback.sensorException(e);
         }
@@ -180,6 +182,7 @@ public class ZKDeviceUtil {
         mContext = null;
         FingerprintFactory.destroy(fingerprintSensor);
         ZKFingerUtil.getInstance().close();
+        stopFingerprintSensor();
     }
 
     private FingerprintCaptureListener fingerprintCaptureListener = new FingerprintCaptureListener() {

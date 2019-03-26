@@ -18,4 +18,9 @@ public interface ZKDeviceCallback {
      * 错误信息
      */
     public void sensorException(FingerprintSensorException e);
+
+    /**
+     * 设备打开成功
+     */
+    public void sensorOpenSuccess();
 }
