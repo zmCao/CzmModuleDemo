@@ -80,6 +80,6 @@ public class SerialPort {
 	private native static FileDescriptor open(String path, int baudrate, int flags);
 	public native void close();
 	static {
-		System.loadLibrary("serial_port");
+		System.loadLibrary("SerialPort");
 	}
 }
