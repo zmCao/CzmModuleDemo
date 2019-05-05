@@ -1,5 +1,7 @@
 package debug;
 
+import android.os.Handler;
+
 import com.czm.module.common.base.BaseApplication;
 
 /**
@@ -22,6 +24,11 @@ public class KotlinApplication extends BaseApplication {
      * 这样就能够在组件请求接口了
      */
     private void login() {
+        new Handler().postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
 
+                        }
+                    }, 2000);
     }
 }
