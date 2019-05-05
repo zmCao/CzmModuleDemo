@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".SetTimeActivity">
+
+    <TextView
+        android:id="@+id/txt_time"
+        android:layout_width="match_parent"
+        android:text="20131023.112800"
+        android:hint="yyyyMMdd.HHmmss"
+        android:gravity="center_vertical"
+        android:layout_height="@dimen/size_40dp"
+        android:layout_marginTop="@dimen/size_20dp" />
+
+    <Button
+        android:id="@+id/btn_set"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="设置"
+        android:layout_marginTop="@dimen/size_20dp" />
+</LinearLayout>

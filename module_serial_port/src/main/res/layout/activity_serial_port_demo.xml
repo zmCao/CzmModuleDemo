@@ -67,7 +67,7 @@
                 android:id="@+id/main_send_et"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="21214F0D0A" />
+                android:text="FAFA21010200010111111111FBFB" />
         </LinearLayout>
 
         <RadioGroup

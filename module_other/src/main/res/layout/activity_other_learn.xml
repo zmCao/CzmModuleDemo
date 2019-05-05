@@ -47,6 +47,11 @@
         android:layout_height="wrap_content"
         android:text="USB读写" />
     <Button
+        android:id="@+id/btn_set_time"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="设置机器时间" />
+    <Button
         android:id="@+id/btn_zk_finger"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

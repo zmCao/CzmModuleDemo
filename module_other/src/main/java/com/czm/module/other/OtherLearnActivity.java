@@ -72,6 +72,10 @@ public class OtherLearnActivity extends BaseActivity {
             PowerManager pManager=(PowerManager) getSystemService(Context.POWER_SERVICE);
             pManager.reboot("重启");
         });
+        Button btn_set_time = findViewById(R.id.btn_set_time);
+        btn_set_time.setOnClickListener(v -> {
+            gotoActivity(SetTimeActivity.class);
+        });
     }
 
     @Override

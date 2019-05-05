@@ -42,7 +42,8 @@ public class SerialPortDemoActivity extends AppCompatActivity implements View.On
     @Override
     protected void onDestroy() {
         super.onDestroy();
-
+        if (serialUtil != null)
+            serialUtil.closeSerialPort();
     }
 
     protected void init() {
@@ -106,6 +107,8 @@ public class SerialPortDemoActivity extends AppCompatActivity implements View.On
             readThread.interrupt();
             receive_tv.setText("");
             receive_b.setEnabled(true);
+            if (serialUtil != null)
+                serialUtil.closeSerialPort();
         } else if (i == R.id.btn_clean) {
             receive_tv.setText("");
         }

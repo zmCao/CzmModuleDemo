@@ -35,7 +35,12 @@ public class SerialUtil {
             outputStream=serialPort.getOutputStream();
         }else throw new NullPointerException("串口设置有误");
     }
-
+    public void closeSerialPort() {
+        if (serialPort != null) {
+            serialPort.close();
+            serialPort = null;
+        }
+    }
     /**
      * 取得byte的长度
      * @return

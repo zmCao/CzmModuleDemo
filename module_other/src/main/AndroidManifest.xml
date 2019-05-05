@@ -5,6 +5,9 @@
     <uses-permission android:name="android.permission.CHANGE_WIFI_STATE"/>
     <uses-permission android:name="android.permission.WRITE_SETTINGS" />
     <uses-permission android:name="android.permission.WRITE_SECURE_SETTINGS" />
+    <uses-permission android:name="android.permission.SET_TIME" />
+    <uses-permission android:name="android.permission.SET_TIME_ZONE" />
+
     <application android:theme="@style/AppTheme">
         <activity android:name=".OtherLearnActivity" />
         <activity android:name=".NoticeBoardMatchesActivity"/>
@@ -18,5 +21,6 @@
         <activity android:name=".SetEthernetIpActivity"/>
         <activity android:name=".USBActivity"/>
         <activity android:name=".DpiActivity"/>
+        <activity android:name=".SetTimeActivity"/>
     </application>
 </manifest>
