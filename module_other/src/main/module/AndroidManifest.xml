@@ -2,8 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     package="com.czm.module.other">
-
-    <!-- android:sharedUserId="android.uid.system"> -->
+    <!--android:sharedUserId="android.uid.system">-->
 
     <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" />
@@ -34,13 +33,13 @@
             android:theme="@style/SplashTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
+                <!--<category android:name="android.intent.category.HOME" />-->
+                <!--<category android:name="android.intent.category.DEFAULT" />-->
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <activity android:name=".OtherLearnActivity" />
         <activity android:name=".NoticeBoardMatchesActivity" />
-        <activity android:name=".BGARefreshActivity" />
         <activity android:name=".ZXingTestActivity" />
         <activity
             android:name=".landscapeCaptureActivity"
@@ -54,13 +53,13 @@
         <activity
             android:name=".finger.ZKFingerActivity"
             android:launchMode="singleTask">
-            <intent-filter>
-                <action android:name="android.hardware.usb.action.USB_DEVICE_ATTACHED" />
-            </intent-filter>
+            <!--<intent-filter>-->
+                <!--<action android:name="android.hardware.usb.action.USB_DEVICE_ATTACHED" />-->
+            <!--</intent-filter>-->
 
-            <meta-data
-                android:name="android.hardware.usb.action.USB_DEVICE_ATTACHED"
-                android:resource="@xml/device_filter" />
+            <!--<meta-data-->
+                <!--android:name="android.hardware.usb.action.USB_DEVICE_ATTACHED"-->
+                <!--android:resource="@xml/device_filter" />-->
         </activity>
         <!-- <receiver android:name=".USBReceiver"> -->
         <!-- <intent-filter> -->
@@ -77,7 +76,7 @@
         <activity
             android:name=".DpiActivity"
             android:theme="@style/FullscreenTheme" />
-        <activity android:name=".SetTimeActivity"/>
+        <activity android:name=".SetTimeActivity" />
     </application>
 
 </manifest>

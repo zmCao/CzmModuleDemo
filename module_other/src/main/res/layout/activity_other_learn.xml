@@ -20,10 +20,10 @@
         android:text="Android 8.0系统的通知栏适配" />
 
     <Button
-        android:id="@+id/btn_bga_refreshlayout"
+        android:id="@+id/btn_open_app"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="bga_refreshlayout   Demo" />
+        android:text="打开外屏APP" />
 
     <Button
         android:id="@+id/btn_zxing"
@@ -60,5 +60,6 @@
         android:id="@+id/btn_base4toimg"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:visibility="gone"
         android:text="BASE64转图片" />
 </LinearLayout>

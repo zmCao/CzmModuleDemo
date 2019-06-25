@@ -1,10 +1,14 @@
 package com.czm.module.other;
 
 import android.content.Context;
+import android.content.Intent;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.PowerManager;
 import android.view.KeyEvent;
 import android.widget.Button;
+import android.widget.Toast;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.czm.module.common.base.BaseActivity;
@@ -27,9 +31,19 @@ public class OtherLearnActivity extends BaseActivity {
         Button btn_notice_board_matches = findViewById(R.id.btn_notice_board_matches);
 //        Button btn_notice_board_matches=null;
         btn_notice_board_matches.setOnClickListener(v -> gotoActivity(NoticeBoardMatchesActivity.class));
-        Button btn_bga_refreshlayout = findViewById(R.id.btn_bga_refreshlayout);
-        btn_bga_refreshlayout.setOnClickListener(v -> {
-
+        Button btn_open_app = findViewById(R.id.btn_open_app);
+        btn_open_app.setOnClickListener(v -> {
+//            Intent intent = new Intent();
+//            //这里是采用的自定义action
+//            intent.setAction("prison.outside.app");
+//            startActivity(intent);
+            PackageManager packageManager = getPackageManager();
+            if (checkPackInfo("com.lb.prison.outside")) {
+                Intent intent = packageManager.getLaunchIntentForPackage("com.lb.prison.outside");
+                startActivity(intent);
+            } else {
+                Toast.makeText(OtherLearnActivity.this, "没有安装" + "com.lb.prison.outside", Toast.LENGTH_SHORT).show();
+            }
         });
         Button btn_zxing = findViewById(R.id.btn_zxing);
         btn_zxing.setOnClickListener(v -> {
@@ -69,7 +83,7 @@ public class OtherLearnActivity extends BaseActivity {
 //            } catch (IOException e) {
 //                e.printStackTrace();
 //            }
-            PowerManager pManager=(PowerManager) getSystemService(Context.POWER_SERVICE);
+            PowerManager pManager = (PowerManager) getSystemService(Context.POWER_SERVICE);
             pManager.reboot("重启");
         });
         Button btn_set_time = findViewById(R.id.btn_set_time);
@@ -91,5 +105,21 @@ public class OtherLearnActivity extends BaseActivity {
             return true;
         }
         return super.onKeyDown(keyCode, event);
+    }
+
+    /**
+     * 检查包是否存在
+     *
+     * @param packname
+     * @return
+     */
+    private boolean checkPackInfo(String packname) {
+        PackageInfo packageInfo = null;
+        try {
+            packageInfo = getPackageManager().getPackageInfo(packname, 0);
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
+        return packageInfo != null;
     }
 }

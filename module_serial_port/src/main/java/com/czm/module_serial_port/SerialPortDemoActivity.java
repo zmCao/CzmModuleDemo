@@ -83,8 +83,9 @@ public class SerialPortDemoActivity extends AppCompatActivity implements View.On
 
         } else if (i == R.id.main_send_b) {
             if (serialUtil != null) {
+                flags++;
                 String context = send_et.getText().toString();
-                Log.d(TAG, "onClick: " + context);
+                Log.e(TAG, "onClick: "+flags +";发送命令:"+ context);
                 try {
                     //serialUtil.setData(SerialUtil.hexStringToBytes(SerialUtil.bytesToHexString(context.getBytes(), context.getBytes().length) + "0d0a"));
 //                    context = context.replace("\r","\n").replace("\n","\r\n").replace("\\r\\n","\r\n");
@@ -156,6 +157,7 @@ public class SerialPortDemoActivity extends AppCompatActivity implements View.On
 //                    Toast.makeText(SerialPortDemoActivity.this, "串口设置有误，无法接收", Toast.LENGTH_SHORT).show();
                 } else {
                     receive_tv.append(data + "\n");
+                    Log.e(TAG, "接收: "+flags +";数据:"+ data);
                 }
             }
         });
