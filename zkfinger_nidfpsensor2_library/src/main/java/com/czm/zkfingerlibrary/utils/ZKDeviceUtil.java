@@ -1,5 +1,6 @@
 package com.czm.zkfingerlibrary.utils;
 
+import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.text.TextUtils;
@@ -8,8 +9,10 @@ import android.util.Log;
 import com.czm.module.common.utils.HexUtils;
 import com.czm.zkfingerlibrary.callback.EnrollCallback;
 import com.czm.zkfingerlibrary.callback.IdentifyCallback;
+import com.czm.zkfingerlibrary.callback.USBAuthCallback;
 import com.czm.zkfingerlibrary.callback.ZKDeviceCallback;
 import com.czm.zkfingerlibrary.entiy.FingerInfo;
+import com.orhanobut.logger.Logger;
 import com.zkteco.android.biometric.core.device.ParameterHelper;
 import com.zkteco.android.biometric.core.device.TransportType;
 import com.zkteco.android.biometric.core.utils.LogHelper;
@@ -33,7 +36,7 @@ public class ZKDeviceUtil {
     private static volatile ZKDeviceUtil instance = null;
     private static final int VID = 6997;    //Silkid VID always 6997
     //目前光学ZK7000A 为770， 半导体FS200 为772
-    private static final int PID = 770;    //NIDFPSensor PID 根据实际设置
+    private int PID = 770;    //NIDFPSensor PID 根据实际设置
     private NIDFPSensor nidfpSensor = null;
     private byte[] fpImage = null;
     private CountDownLatch countdownLatch = null;
@@ -72,11 +75,8 @@ public class ZKDeviceUtil {
 
     /**
      * 实例化指纹采集设备类（USB）
-     *
-     * @param context
      */
-    public void createFingerprintSensorForUSB(Context context) {
-        mContext = context;
+    public void createFingerprintSensorForUSB() {
         // Define output log level
         LogHelper.setLevel(Log.WARN);
         // Start fingerprint sensor
@@ -91,13 +91,16 @@ public class ZKDeviceUtil {
     /**
      * 开始初始化指纹采集设备（打开,线程采集）
      */
-    public void beginFingerprintSensor(ZKDeviceCallback captureCallback) {
+    public void beginFingerprintSensor(Context context, int PID, ZKDeviceCallback captureCallback) {
+        mContext = context;
+        this.PID = PID;
         try {
             if (bstart) {
                 LogHelper.e("指纹设备已开启");
                 captureCallback.sensorOpenSuccess();
                 return;
             }
+            createFingerprintSensorForUSB();
             this.captureCallback = captureCallback;
             nidfpSensor.setIDFPSupport(false);//不支持15.0(身份证指纹比对)
             nidfpSensor.open(0);
@@ -164,7 +167,7 @@ public class ZKDeviceUtil {
     public boolean verify(List<FingerInfo> fingerInfoArrayList, IdentifyCallback identifyCallback) {
         if (bstart) {
             for (FingerInfo fingerInfo : fingerInfoArrayList) {
-                FingerprintService.save(HexUtils.hexStringToBytes(fingerInfo.getTemplateBuffer()), fingerInfo.getFingerId().toString());
+                ZKFingerService.save(HexUtils.hexStringToBytes(fingerInfo.getTemplateBuffer()), fingerInfo.getFingerId().toString());
             }
             this.identifyCallback = identifyCallback;
             ZKFingerUtil.getInstance().setRegister(false);
@@ -211,7 +214,6 @@ public class ZKDeviceUtil {
             nidfpSensor.GetFPRawData(0, fpImage);
         } catch (NIDFPException e) {
             e.printStackTrace();
-            captureCallback.sensorException(e);
             return -2;
         }
         ret = ZKFingerService.extract(fpImage, nidfpSensor.getFpImgWidth(), nidfpSensor.getFpImgHeight(), fpTemplate, quality);
@@ -238,28 +240,35 @@ public class ZKDeviceUtil {
                 int[] quality = new int[1];
                 int ret = AcquireImageAndTemplate(0, fpImage, fpTemplate, quality);
                 if (ret <= 0) {
-                    LogHelper.e("AcquireImageAndTemplate ret=" + ret);
+                    Logger.e("AcquireImageAndTemplate ret=" + ret);
                     continue;
                 }
-                //获取最后一张指纹图像
-                Bitmap mBitMap = ToolUtils.renderCroppedGreyScaleBitmap(fpImage, nidfpSensor.getFpImgWidth(), nidfpSensor.getFpImgHeight());
-                captureCallback.captureOK(mBitMap);
-                if (ZKFingerUtil.getInstance().isRegister()) {
-                    //注册
-                    if (enrollCallback != null)
-                        ZKFingerUtil.getInstance().enroll(fpTemplate, enrollCallback);
-                } else {
-                    //识别
-                    if (identifyCallback != null) {
-                        if (TextUtils.isEmpty(verifyId)) {
-                            ZKFingerUtil.getInstance().identify(fpTemplate, identifyCallback);
-                        } else {
-                            ZKFingerUtil.getInstance().verifyId(verifyId, fpTemplate, identifyCallback);
+                if (mContext != null) {
+                    ((Activity) mContext).runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            //获取最后一张指纹图像
+                            Bitmap mBitMap = ToolUtils.renderCroppedGreyScaleBitmap(fpImage, nidfpSensor.getFpImgWidth(), nidfpSensor.getFpImgHeight());
+                            captureCallback.captureOK(mBitMap);
+                            if (ZKFingerUtil.getInstance().isRegister()) {
+                                //注册
+                                if (enrollCallback != null)
+                                    ZKFingerUtil.getInstance().enroll(fpTemplate, enrollCallback);
+                            } else {
+                                //识别
+                                if (identifyCallback != null) {
+                                    if (TextUtils.isEmpty(verifyId)) {
+                                        ZKFingerUtil.getInstance().identify(fpTemplate, identifyCallback);
+                                    } else {
+                                        ZKFingerUtil.getInstance().verifyId(verifyId, fpTemplate, identifyCallback);
+                                    }
+                                }
+                            }
                         }
-                    }
+                    });
                 }
+                countdownLatch.countDown();
             }
-            countdownLatch.countDown();
         }
     }
 }

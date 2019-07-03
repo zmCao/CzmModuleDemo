@@ -5,21 +5,27 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.graphics.Bitmap;
 import android.hardware.usb.UsbDevice;
 import android.hardware.usb.UsbManager;
 import android.widget.Toast;
 
 import com.czm.module.common.utils.ToastUtils;
+import com.czm.zkfingerlibrary.callback.USBAuthCallback;
+import com.czm.zkfingerlibrary.callback.ZKDeviceCallback;
+import com.zkteco.android.biometric.nidfpsensor.exception.NIDFPException;
 
 /**
  * USB设备管理工具类
  */
 public class USBManagerUtil {
     private static final int VID = 6997;    //Silkid VID always 6997
-    private static final int PID = 289;     //Silkid PID always 289
+    //目前光学ZK7000A 为770， 半导体FS200 为772
+    private static int PID = 770;    //NIDFPSensor PID 根据实际设置
     private static volatile USBManagerUtil instance = null;
     private UsbManager musbManager = null;
     private final String ACTION_USB_PERMISSION = "com.zkteco.android.biometric.USB_PERMISSION";
+    private USBAuthCallback usbAuthCallback;
 
     public static USBManagerUtil getInstance() {
         if (instance == null) {
@@ -44,8 +50,9 @@ public class USBManagerUtil {
                 synchronized (this) {
                     UsbDevice device = intent.getParcelableExtra(UsbManager.EXTRA_DEVICE);
                     if (intent.getBooleanExtra(UsbManager.EXTRA_PERMISSION_GRANTED, false)) {
+                        usbAuthCallback.sucess(PID);
                     } else {
-                        ToastUtils.toastShort(context, "USB未授权");
+                        usbAuthCallback.fail();
                     }
                 }
             }
@@ -54,9 +61,11 @@ public class USBManagerUtil {
 
     /**
      * 检测USB权限，弹窗提示
+     *
      * @param mContext
      */
-    public void RequestDevicePermission(Context mContext) {
+    public void RequestDevicePermission(Context mContext, USBAuthCallback usbAuthCallback) {
+        this.usbAuthCallback = usbAuthCallback;
         musbManager = (UsbManager) mContext.getSystemService(Context.USB_SERVICE);
         IntentFilter filter = new IntentFilter();
         filter.addAction(ACTION_USB_PERMISSION);
@@ -64,7 +73,8 @@ public class USBManagerUtil {
         mContext.registerReceiver(mUsbReceiver, filter);
 
         for (UsbDevice device : musbManager.getDeviceList().values()) {
-            if (device.getVendorId() == VID && device.getProductId() == PID) {
+            if (VID == device.getVendorId() && (device.getProductId() >= 0x300 && device.getProductId() <= 0x3FF)) {
+                PID = device.getProductId();
                 Intent intent = new Intent(ACTION_USB_PERMISSION);
                 PendingIntent pendingIntent = PendingIntent.getBroadcast(mContext, 0, intent, 0);
                 musbManager.requestPermission(device, pendingIntent);
