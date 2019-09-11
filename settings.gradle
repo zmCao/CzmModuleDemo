@@ -1,4 +1,7 @@
-include ':app', ':arcfacelibrary', ':zkfingerlibrary', ':module_audio_video', ':module_kotlin',
+include ':app', ':arcfacelibrary',
+//        ':zkfingerlibrary',
+        ':module_audio_video',
+        ':module_kotlin',
 //        ':module_greendao',
         ':module_netty',
         ':module_other',
@@ -6,4 +9,5 @@ include ':app', ':arcfacelibrary', ':zkfingerlibrary', ':module_audio_video', ':
         ':base_common',
         ':module_main',
         ':module_customcontrol',
-        ':module_home'
+        ':module_home',
+        ':zkfinger_nidfpsensor2_library'

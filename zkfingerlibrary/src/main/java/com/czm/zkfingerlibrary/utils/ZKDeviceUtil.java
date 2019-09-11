@@ -3,11 +3,13 @@ package com.czm.zkfingerlibrary.utils;
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.text.TextUtils;
 import android.util.Log;
 
-import com.czm.zkfingerlibrary.callback.ZKDeviceCallback;
+import com.czm.module.common.utils.HexUtils;
 import com.czm.zkfingerlibrary.callback.EnrollCallback;
 import com.czm.zkfingerlibrary.callback.IdentifyCallback;
+import com.czm.zkfingerlibrary.callback.ZKDeviceCallback;
 import com.czm.zkfingerlibrary.entiy.FingerInfo;
 import com.zkteco.android.biometric.core.device.ParameterHelper;
 import com.zkteco.android.biometric.core.device.TransportType;
@@ -38,6 +40,7 @@ public class ZKDeviceUtil {
     private EnrollCallback enrollCallback;
     private IdentifyCallback identifyCallback;
     private ZKDeviceCallback captureCallback;
+    private String verifyId = "";//需要别对的人员ID
 
     public static ZKDeviceUtil getInstance() {
         if (instance == null) {
@@ -56,6 +59,7 @@ public class ZKDeviceUtil {
 
     /**
      * 设备是否开启
+     *
      * @return
      */
     public boolean isBstart() {
@@ -70,7 +74,7 @@ public class ZKDeviceUtil {
     public void createFingerprintSensorForUSB(Context context) {
         mContext = context;
         // Define output log level
-        LogHelper.setLevel(Log.VERBOSE);
+        LogHelper.setLevel(Log.WARN);
         // Start fingerprint sensor
         Map fingerprintParams = new HashMap();
         //set vid
@@ -122,6 +126,7 @@ public class ZKDeviceUtil {
 
     /**
      * 停止指纹采集设备
+     * 关闭指纹算法库，同时释放缓存
      */
     public void stopFingerprintSensor() {
         try {
@@ -159,12 +164,12 @@ public class ZKDeviceUtil {
     }
 
     /**
-     * 指纹验证
+     * 指纹验证1:N
      */
     public boolean verify(List<FingerInfo> fingerInfoArrayList, IdentifyCallback identifyCallback) {
         if (bstart) {
             for (FingerInfo fingerInfo : fingerInfoArrayList) {
-                FingerprintService.save(fingerInfo.getTemplateBuffer(), fingerInfo.getId());
+                FingerprintService.save(HexUtils.hexStringToBytes(fingerInfo.getTemplateBuffer()), fingerInfo.getFingerId().toString());
             }
             this.identifyCallback = identifyCallback;
             ZKFingerUtil.getInstance().setRegister(false);
@@ -176,13 +181,21 @@ public class ZKDeviceUtil {
     }
 
     /**
+     * 指纹验证1:1
+     */
+    public void setVerifyId(String verifyId) {
+        this.verifyId = verifyId;
+    }
+
+
+    /**
      * 释放指纹设备
      */
     public void onDestory() {
         mContext = null;
+        verifyId = "";
         FingerprintFactory.destroy(fingerprintSensor);
         ZKFingerUtil.getInstance().close();
-        stopFingerprintSensor();
     }
 
     private FingerprintCaptureListener fingerprintCaptureListener = new FingerprintCaptureListener() {
@@ -192,35 +205,46 @@ public class ZKDeviceUtil {
             final byte[] imgBuffer = imageBuffer;
             final byte[] tmpBuffer = templateBuffer;
             final int capMode = captureMode;
-            ((Activity) mContext).runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    Bitmap mBitMap = null;
-                    if (capMode == FingerprintCaptureListener.MODE_CAPTURE_TEMPLATEANDIMAGE) {
-                        mBitMap = ToolUtils.renderCroppedGreyScaleBitmap(imgBuffer, attributes[0], attributes[1]);
-                        captureCallback.captureOK(mBitMap);
+            if (mContext != null) {
+                ((Activity) mContext).runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Bitmap mBitMap = null;
+                        if (capMode == FingerprintCaptureListener.MODE_CAPTURE_TEMPLATEANDIMAGE) {
+                            mBitMap = ToolUtils.renderCroppedGreyScaleBitmap(imgBuffer, attributes[0], attributes[1]);
+                            captureCallback.captureOK(mBitMap);
+                        }
+                        if (ZKFingerUtil.getInstance().isRegister()) {
+                            //注册
+                            if (enrollCallback != null)
+                                ZKFingerUtil.getInstance().enroll(tmpBuffer, enrollCallback);
+                        } else {
+                            //识别
+                            if (identifyCallback != null) {
+                                if (TextUtils.isEmpty(verifyId)) {
+                                    ZKFingerUtil.getInstance().identify(tmpBuffer, identifyCallback);
+                                } else {
+                                    ZKFingerUtil.getInstance().verifyId(verifyId, tmpBuffer, identifyCallback);
+                                }
+                            }
+                        }
                     }
-                    if (ZKFingerUtil.getInstance().isRegister()) {
-                        if (enrollCallback != null)
-                            ZKFingerUtil.getInstance().enroll(templateBuffer, enrollCallback);
-                    } else {
-                        if (identifyCallback != null)
-                            ZKFingerUtil.getInstance().identify(templateBuffer, identifyCallback);
-                    }
-                }
-            });
+                });
+            }
         }
 
         @Override
         public void captureError(FingerprintSensorException e) {
-            ((Activity) mContext).runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    captureCallback.sensorException(e);
-                    LogHelper.e("captureError  errno=" + e.getErrorCode() +
-                            ",Internal error code: " + e.getInternalErrorCode() + ",message=" + e.getMessage());
-                }
-            });
+            if (mContext != null) {
+                ((Activity) mContext).runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        captureCallback.sensorException(e);
+                        LogHelper.e("captureError  errno=" + e.getErrorCode() +
+                                ",Internal error code: " + e.getInternalErrorCode() + ",message=" + e.getMessage());
+                    }
+                });
+            }
         }
     };
 }

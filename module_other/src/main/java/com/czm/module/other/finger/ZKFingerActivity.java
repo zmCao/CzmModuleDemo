@@ -1,20 +1,29 @@
 package com.czm.module.other.finger;
 
+import android.app.PendingIntent;
+import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.graphics.Bitmap;
+import android.hardware.usb.UsbDevice;
+import android.hardware.usb.UsbManager;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.czm.module.other.R;
+import com.czm.zkfingerlibrary.callback.USBAuthCallback;
 import com.czm.zkfingerlibrary.callback.ZKDeviceCallback;
 import com.czm.zkfingerlibrary.callback.EnrollCallback;
 import com.czm.zkfingerlibrary.callback.IdentifyCallback;
 import com.czm.zkfingerlibrary.entiy.FingerInfo;
+import com.czm.zkfingerlibrary.utils.USBManagerUtil;
 import com.czm.zkfingerlibrary.utils.ZKDeviceUtil;
-import com.zkteco.android.biometric.module.fingerprint.exception.FingerprintSensorException;
+import com.zkteco.android.biometric.nidfpsensor.exception.NIDFPException;
 import com.zkteco.zkfinger.FingerprintService;
 
 import java.util.ArrayList;
@@ -32,8 +41,7 @@ public class ZKFingerActivity extends AppCompatActivity {
         setContentView(R.layout.activity_zkfinger);
         textView = (TextView) findViewById(R.id.textView);
         fpImageView = (ImageView) findViewById(R.id.imageView);
-        mContext = this.getApplicationContext();
-        ZKDeviceUtil.getInstance().createFingerprintSensorForUSB(this);
+        mContext = this;
     }
 
     @Override
@@ -42,24 +50,35 @@ public class ZKFingerActivity extends AppCompatActivity {
         ZKDeviceUtil.getInstance().onDestory();
     }
 
-    public void OnBnBegin(View view) throws FingerprintSensorException {
-        ZKDeviceUtil.getInstance().beginFingerprintSensor(new ZKDeviceCallback() {
+    public void OnBnBegin(View view) throws NIDFPException {
+        USBManagerUtil.getInstance().RequestDevicePermission(mContext, new USBAuthCallback() {
             @Override
-            public void captureOK(Bitmap bitmap) {
-                fpImageView.setImageBitmap(bitmap);
+            public void sucess(int PID) {
+                ZKDeviceUtil.getInstance().beginFingerprintSensor(mContext, PID, new ZKDeviceCallback() {
+                    @Override
+                    public void captureOK(Bitmap bitmap) {
+                        fpImageView.setImageBitmap(bitmap);
+                    }
+
+                    @Override
+                    public void sensorException(NIDFPException e) {
+                        textView.setText("captureError  errno=" + e.getErrorCode() +
+                                ",Internal error code: " + e.getInternalErrorCode() + ",message=" + e.getMessage());
+                    }
+
+                    @Override
+                    public void sensorOpenSuccess() {
+                        textView.setText("指纹设备打开成功");
+                    }
+                });
             }
 
             @Override
-            public void sensorException(FingerprintSensorException e) {
-                textView.setText("captureError  errno=" + e.getErrorCode() +
-                        ",Internal error code: " + e.getInternalErrorCode() + ",message=" + e.getMessage());
-            }
-
-            @Override
-            public void sensorOpenSuccess() {
-                textView.setText("指纹设备打开成功");
+            public void fail() {
+                textView.setText("USB 授权失败");
             }
         });
+
     }
 
     public void OnBnStop(View view) {

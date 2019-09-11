@@ -1,6 +1,7 @@
 package com.czm.module_serial_port;
 
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -17,7 +18,7 @@ public class SerialPortDemoActivity extends AppCompatActivity implements View.On
     private TextView receive_tv;
     private Button receive_b;
     private EditText send_et;
-    private Button sendt_b;
+    private Button send_b;
     private Button stop_b;
     private ReadThread readThread;
     private int size = -1;
@@ -31,6 +32,8 @@ public class SerialPortDemoActivity extends AppCompatActivity implements View.On
     private EditText edt_ck, edt_btl;
     private RadioButton rBtn_string, rBtn_hex;
     private Button btn_clean;
+    private Button send_b_loop;
+    private Handler handler = new Handler();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,10 +53,10 @@ public class SerialPortDemoActivity extends AppCompatActivity implements View.On
         receive_tv = findViewById(R.id.main_recive_tv);
         receive_b = findViewById(R.id.main_recive_b);
         send_et = findViewById(R.id.main_send_et);
-        sendt_b = findViewById(R.id.main_send_b);
+        send_b = findViewById(R.id.main_send_b);
         stop_b = findViewById(R.id.main_stop_b);
         receive_b.setOnClickListener(this);
-        sendt_b.setOnClickListener(this);
+        send_b.setOnClickListener(this);
         stop_b.setOnClickListener(this);
         edt_ck = findViewById(R.id.edt_ck);
         edt_btl = findViewById(R.id.edt_btl);
@@ -61,7 +64,8 @@ public class SerialPortDemoActivity extends AppCompatActivity implements View.On
         rBtn_string = findViewById(R.id.rBtn_string);
         btn_clean = findViewById(R.id.btn_clean);
         btn_clean.setOnClickListener(this);
-
+        send_b_loop = findViewById(R.id.main_send_b_loop);
+        send_b_loop.setOnClickListener(this);
     }
 
     @Override
@@ -82,40 +86,56 @@ public class SerialPortDemoActivity extends AppCompatActivity implements View.On
             receive_b.setEnabled(false);
 
         } else if (i == R.id.main_send_b) {
-            if (serialUtil != null) {
-                flags++;
-                String context = send_et.getText().toString();
-                Log.e(TAG, "onClick: "+flags +";发送命令:"+ context);
-                try {
-                    //serialUtil.setData(SerialUtil.hexStringToBytes(SerialUtil.bytesToHexString(context.getBytes(), context.getBytes().length) + "0d0a"));
-//                    context = context.replace("\r","\n").replace("\n","\r\n").replace("\\r\\n","\r\n");
-                    byte[] sendBytes = null;
-                    if (rBtn_string.isChecked()) {
-                        sendBytes = context.getBytes();
-                    } else if (rBtn_hex.isChecked()) {
-                        sendBytes = SerialUtil.hexStringToBytes(context);
-                    }
-                    serialUtil.setData(sendBytes);
-                } catch (NullPointerException e) {
-                    Toast.makeText(this, "串口设置有误，无法发送", Toast.LENGTH_SHORT).show();
-                    e.printStackTrace();
-                }
-            } else {
-                Toast.makeText(this, "串口未设置", Toast.LENGTH_SHORT).show();
-            }
+            send();
+
+        } else if (i == R.id.main_send_b_loop) {
+            send_loop();
 
         } else if (i == R.id.main_stop_b) {
             readThread.interrupt();
             receive_tv.setText("");
             receive_b.setEnabled(true);
-            if (serialUtil != null)
+            if (serialUtil != null) {
                 serialUtil.closeSerialPort();
+                serialUtil=null;
+            }
+            handler.removeCallbacks(loopSend);
         } else if (i == R.id.btn_clean) {
             receive_tv.setText("");
         }
 
     }
 
+    private void send_loop() {
+        send();
+        handler.postDelayed(loopSend, 1000);
+    }
+
+    private Runnable loopSend = this::send_loop;
+
+    private void send() {
+        if (serialUtil != null) {
+            flags++;
+            String context = send_et.getText().toString();
+            Log.e(TAG, "onClick: " + flags + ";发送命令:" + context);
+            try {
+                //serialUtil.setData(SerialUtil.hexStringToBytes(SerialUtil.bytesToHexString(context.getBytes(), context.getBytes().length) + "0d0a"));
+//                    context = context.replace("\r","\n").replace("\n","\r\n").replace("\\r\\n","\r\n");
+                byte[] sendBytes = null;
+                if (rBtn_string.isChecked()) {
+                    sendBytes = context.getBytes();
+                } else if (rBtn_hex.isChecked()) {
+                    sendBytes = SerialUtil.hexStringToBytes(context);
+                }
+                serialUtil.setData(sendBytes);
+            } catch (NullPointerException e) {
+                Toast.makeText(this, "串口设置有误，无法发送", Toast.LENGTH_SHORT).show();
+                e.printStackTrace();
+            }
+        } else {
+            Toast.makeText(this, "串口未设置", Toast.LENGTH_SHORT).show();
+        }
+    }
 
     private class ReadThread extends Thread {
         @Override
@@ -157,7 +177,7 @@ public class SerialPortDemoActivity extends AppCompatActivity implements View.On
 //                    Toast.makeText(SerialPortDemoActivity.this, "串口设置有误，无法接收", Toast.LENGTH_SHORT).show();
                 } else {
                     receive_tv.append(data + "\n");
-                    Log.e(TAG, "接收: "+flags +";数据:"+ data);
+                    Log.e(TAG, "接收: " + flags + ";数据:" + data);
                 }
             }
         });

@@ -1,7 +1,5 @@
 package com.czm.zkfingerlibrary.utils;
 
-import android.graphics.Bitmap;
-
 import com.czm.zkfingerlibrary.callback.EnrollCallback;
 import com.czm.zkfingerlibrary.callback.IdentifyCallback;
 import com.zkteco.android.biometric.core.utils.LogHelper;
@@ -15,7 +13,7 @@ public class ZKFingerUtil {
     private static final int VID = 6997;    //Silkid VID always 6997
     private static final int PID = 289;     //Silkid PID always 289
     private boolean isRegister = false;
-    private int enrollidx = 0;
+    private int enrollidx = 0; //录入索引
     private byte[][] regtemparray = new byte[3][2048];  //register template buffer array
 
     static ZKFingerUtil getInstance() {
@@ -48,7 +46,6 @@ public class ZKFingerUtil {
         //init algorithm share library
         if (0 != FingerprintService.init(limit)) {
             LogHelper.e("初始化指纹识别引擎失败");
-            return;
         }
     }
 
@@ -77,6 +74,22 @@ public class ZKFingerUtil {
     }
 
     /**
+     * 将指纹模板与缓存中指定id的指纹模板进行匹配（即1:1比对），返回匹配分数。
+     *
+     * @param temp 指纹模板数据数组
+     * @param id   被匹配的目标指纹模板id。id类型为字符串，字符串长度不能超过20个字节。
+     */
+    void verifyId(String id, byte[] temp, IdentifyCallback identifyCallback) {
+        int ret = FingerprintService.verifyId(temp, id);
+        if (ret > 55) {
+            identifyCallback.identifySuccess(id, ret + "");
+        } else {
+            identifyCallback.identifyFailed();
+            LogHelper.e("identify fail");
+        }
+    }
+
+    /**
      * 指纹录入
      *
      * @param tmpBuffer      指纹模板
@@ -94,6 +107,7 @@ public class ZKFingerUtil {
         }
         if (enrollidx > 0 && FingerprintService.verify(regtemparray[enrollidx - 1], tmpBuffer) <= 0) {
             enrollCallback.enrollFailed("指纹录入失败，请重新录入3次指纹");
+            enrollidx = 0;
             return;
         }
         System.arraycopy(tmpBuffer, 0, regtemparray[enrollidx], 0, 2048);
@@ -101,12 +115,12 @@ public class ZKFingerUtil {
         if (enrollidx == 3) {
             byte[] regTemp = new byte[2048];
             int mergeRet = FingerprintService.merge(regtemparray[0], regtemparray[1], regtemparray[2], regTemp);
-            if (mergeRet >0) {
+            if (mergeRet > 0) {
                 enrollCallback.enrollSuccess(regTemp);
                 isRegister = false;
             } else {
                 enrollCallback.enrollFailed("指纹录入失败，请重新录入3次指纹");
-                enrollidx=0;
+                enrollidx = 0;
             }
 
         } else {

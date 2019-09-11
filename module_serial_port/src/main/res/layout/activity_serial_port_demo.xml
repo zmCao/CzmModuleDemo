@@ -67,7 +67,7 @@
                 android:id="@+id/main_send_et"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="FAFA21010200010111111111FBFB" />
+                android:text="FAFA33010B006B0000000200000000000011111111FBFB" />
         </LinearLayout>
 
         <RadioGroup
@@ -96,6 +96,11 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="发送" />
+        <Button
+            android:id="@+id/main_send_b_loop"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="1秒循环发送" />
 
         <Button
             android:id="@+id/btn_clean"
