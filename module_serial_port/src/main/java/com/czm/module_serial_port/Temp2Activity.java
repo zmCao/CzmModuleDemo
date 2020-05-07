@@ -1,6 +1,5 @@
 package com.czm.module_serial_port;
 
-import android.nfc.Tag;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
@@ -12,11 +11,11 @@ import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.czm.module.common.utils.DateUtil;
+import com.czm.module.common.utils.HexUtils;
 
 import android_serialport_api.SerialUtil;
 
-public class SerialPortDemoActivity extends AppCompatActivity implements View.OnClickListener {
+public class Temp2Activity extends AppCompatActivity implements View.OnClickListener {
 
     private TextView receive_tv;
     private Button receive_b;
@@ -37,20 +36,24 @@ public class SerialPortDemoActivity extends AppCompatActivity implements View.On
     private Button btn_clean;
     private Button send_b_loop;
     private Handler handler = new Handler();
+    private int oldFlags = 0;
+    private String sbReceive;
+    private EditText edt_jlxs;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_serial_port_demo);
+        setContentView(R.layout.activity_serial_port_demo_uart);
         init();
+
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        Log.e("生命周期", "onDestroy:" + DateUtil.getTimeFrom(System.currentTimeMillis()));
         if (serialUtil != null)
             serialUtil.closeSerialPort();
+
     }
 
     protected void init() {
@@ -70,6 +73,8 @@ public class SerialPortDemoActivity extends AppCompatActivity implements View.On
         btn_clean.setOnClickListener(this);
         send_b_loop = findViewById(R.id.main_send_b_loop);
         send_b_loop.setOnClickListener(this);
+        edt_jlxs = findViewById(R.id.edt_jlxs);
+        send_et.setText("F00101EFEE");
     }
 
     @Override
@@ -112,7 +117,7 @@ public class SerialPortDemoActivity extends AppCompatActivity implements View.On
 
     private void send_loop() {
         send();
-        handler.postDelayed(loopSend, 1000);
+        handler.postDelayed(loopSend, 3000);
     }
 
     private Runnable loopSend = this::send_loop;
@@ -148,10 +153,11 @@ public class SerialPortDemoActivity extends AppCompatActivity implements View.On
             while (!Thread.currentThread().isInterrupted()) {
                 try {
                     byte[] data = serialUtil.getDataByte();
+
                     if (data != null) {
-                        Log.e(TAG, "长度：" + data.length);
+//                        Log.e(TAG, "接收: " + flags + ";数据:" + HexUtils.bytesToHexString(data));
                         String s = new String(data);
-                        String sRec = SerialUtil.bytesToHexString(data, data.length);
+                        String sRec = HexUtils.bytesToHexString(data);
                         if (rBtn_hex.isChecked()) {
                             onDataReceived(sRec);
                         } else if (rBtn_string.isChecked()) {
@@ -168,7 +174,6 @@ public class SerialPortDemoActivity extends AppCompatActivity implements View.On
                     onDataReceived("-1");
                     readThread.interrupt();
                 }
-
             }
         }
     }
@@ -181,12 +186,79 @@ public class SerialPortDemoActivity extends AppCompatActivity implements View.On
                 if ("-1".equals(data)) {
 //                    Toast.makeText(SerialPortDemoActivity.this, "串口设置有误，无法接收", Toast.LENGTH_SHORT).show();
                 } else {
-                    receive_tv.append(data + "\n");
-                    Log.e(TAG, "接收: " + flags + ";数据:" + data);
+                    Log.e(TAG, "接收: flags=" + flags + ";oldFlags=" + oldFlags + ";数据长度:" + data.length());
+                    if (flags == oldFlags) {
+                        sbReceive = sbReceive + data;
+                    } else {
+                        sbReceive = "";
+                        sbReceive = sbReceive + data;
+                        oldFlags = flags;
+                    }
+//                    if (sbReceive.length() == (2060*2)) {
+                    if (sbReceive.length() == (10 * 2)) {
+                        Log.e(TAG, "第" + flags + "次数据接收完成；长度：" + sbReceive.length());
+                        byte[] tempByte = HexUtils.hexStringToBytes(sbReceive);
+                        parserTemp(tempByte);
+//                        getTemp(tempByte);
+                    }
                 }
             }
         });
     }
 
+    private void parserTemp(byte[] data) {
+        if (data[0] == (byte) 0xF0 && data[1] == (byte) 0x01) {
+            double maxTemp = getTemp(data[4], data[5]) * Double.parseDouble(edt_jlxs.getText().toString());
+            double minTemp = getTemp(data[6], data[7]) * Double.parseDouble(edt_jlxs.getText().toString());
+            Log.e(TAG, "最高温度：" + maxTemp + "℃；  最底温度：" + minTemp + "℃" + "\n");
+            receive_tv.append("最高温度：" + maxTemp + "℃" + "          " + "最底温度：" + minTemp + "℃" + "\n");
+        }
+    }
 
+    private void getTemp(byte[] data) {
+        if (data[0] == (byte) 0xF0 && data[1] == (byte) 0x4F) {
+            double dAverageTemp = 0.0f;
+            int iTemp;
+            int[] iTempArray = new int[1024];
+            int iTempAdd = 0;
+            for (int i = 0; i < 1024; i++) {
+                iTemp = (data[i * 2 + 4] & 0xFF) * 256 + (data[i * 2 + 5] & 0xFF) - 2731;
+//                if (iTemp < 430) {
+                iTempArray[iTempAdd++] = iTemp;
+//                }
+            }
+            if (iTempAdd >= 50) {
+                int tmp;
+                for (int i = 0; i < iTempAdd; i++) {
+                    for (int j = i + 1; j < iTempAdd; j++) {
+                        if (iTempArray[i] < iTempArray[j]) {
+                            tmp = iTempArray[i];
+                            iTempArray[i] = iTempArray[j];
+                            iTempArray[j] = tmp;
+                        }
+                    }
+                }
+                tmp = 0;
+                for (int i = 0; i < 5; i++) {
+                    tmp += iTempArray[i];
+                    Log.e(TAG, iTempArray[i] + "");
+                }
+                dAverageTemp = tmp / 50.0f;
+                double bdTemp = getTemp(data[2052], data[2053]);
+                Log.e("SS_TEMP", "第" + flags + "次数据接收完成；长度：" + data.length + ";最大温度：" + iTempArray[0] + "℃" + ";平均温度：" + dAverageTemp + "℃" + ";本底温度：" + bdTemp + "℃" + "\n");
+                receive_tv.append("最大温度：" + iTempArray[0] + "℃" + ";平均温度：" + dAverageTemp + "℃" + "          " + "本底温度：" + bdTemp + "℃" + "\n");
+            } else {
+                dAverageTemp = 0.0f;
+            }
+
+        }
+    }
+
+    private double getTemp(int bTemp) {
+        return (bTemp - 2731) / 10.0;
+    }
+
+    private double getTemp(byte g, byte d) {
+        return ((g & 0xFF) * 256 + (d & 0xFF) - 2731) / 10.0;
+    }
 }

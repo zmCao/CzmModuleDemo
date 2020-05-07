@@ -398,7 +398,7 @@ public class MobileUtil {
      * @param context
      * @return
      */
-    private static String getMacAddress(Context context) {
+    public static String getMacAddress(Context context) {
 
         // 如果是6.0以下，直接通过wifimanager获取
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
@@ -438,7 +438,7 @@ public class MobileUtil {
         return macSerial;
     }
 
-    private static String getMacAddress0(Context context) {
+    public static String getMacAddress0(Context context) {
         if (isAccessWifiStateAuthorized(context)) {
             WifiManager wifiMgr = (WifiManager) context.getApplicationContext()
                     .getSystemService(Context.WIFI_SERVICE);
@@ -456,6 +456,82 @@ public class MobileUtil {
 
     }
 
+    /**
+     * 具体设备直接获取wlan0 口  mac
+     *
+     * @param context
+     * @return
+     */
+    public static String getMacWlan0(Context context) {
+
+        String str = "";
+        String macSerial = "";
+        try {
+            Process pp = Runtime.getRuntime().exec(
+                    "cat /sys/class/net/wlan0/address");
+            InputStreamReader ir = new InputStreamReader(pp.getInputStream());
+            LineNumberReader input = new LineNumberReader(ir);
+            for (; null != str; ) {
+                str = input.readLine();
+                if (str != null) {
+                    macSerial = str.trim();// 去空格
+                    break;
+                }
+            }
+        } catch (Exception ex) {
+            Log.e("----->" + "NetInfoManager", "getMacAddress:" + ex.toString());
+        }
+//        if (macSerial == null || "".equals(macSerial)) {
+//            try {
+//                return loadFileAsString("/sys/class/net/eth0/address")
+//                        .toUpperCase().substring(0, 17);
+//            } catch (Exception e) {
+//                e.printStackTrace();
+//                Log.e("----->" + "NetInfoManager",
+//                        "getMacAddress:" + e.toString());
+//            }
+//        }
+        if (macSerial == null || "".equals(macSerial)) {
+            return getMachineHardwareAddressForWlan0();
+        }
+        return macSerial;
+    }
+
+    /**
+     * android 7.0及以上 （2）扫描各个网络接口获取mac地址
+     *
+     */
+    /**
+     * 获取设备HardwareAddress地址 专门获取wlan0口的
+     *
+     * @return
+     */
+    public static String getMachineHardwareAddressForWlan0() {
+        Enumeration<NetworkInterface> interfaces = null;
+        try {
+            interfaces = NetworkInterface.getNetworkInterfaces();
+        } catch (SocketException e) {
+            e.printStackTrace();
+        }
+        String hardWareAddress = null;
+        NetworkInterface iF = null;
+        if (interfaces == null) {
+            return null;
+        }
+        while (interfaces.hasMoreElements()) {
+            iF = interfaces.nextElement();
+            if (iF.getName().equals("wlan0")) {
+                try {
+                    hardWareAddress = bytesToString(iF.getHardwareAddress());
+                    if (hardWareAddress != null)
+                        break;
+                } catch (SocketException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        return hardWareAddress;
+    }
     /**
      * Check whether accessing wifi state is permitted
      *

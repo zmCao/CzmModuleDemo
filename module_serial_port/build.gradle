@@ -55,4 +55,5 @@ dependencies {
     implementation 'com.android.support.constraint:constraint-layout:1.0.2'
     annotationProcessor deps.arouter_compiler
     implementation project(':base_common')
+    implementation files('libs\\ifp_yface.jar')
 }

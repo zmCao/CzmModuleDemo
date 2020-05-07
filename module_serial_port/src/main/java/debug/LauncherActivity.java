@@ -34,7 +34,7 @@ public class LauncherActivity extends BaseActivity {
         super.onResume();
         ToastUtils.showLongToast(R.string.app_name);
         new Handler().postDelayed(() -> {
-            gotoActivity(SerialPortDemoActivity.class);
+            gotoActivity(SerialPortLearnActivity.class);
             finish();
         }, 2000);
     }

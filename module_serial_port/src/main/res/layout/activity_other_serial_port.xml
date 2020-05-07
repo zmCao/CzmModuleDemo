@@ -5,16 +5,49 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
+    <TextView
+        android:id="@+id/txt_mac"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/size_20dp"
+        android:textSize="22sp" />
+
+    <TextView
+        android:id="@+id/txt_wifi_mac"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/size_20dp"
+        android:layout_marginEnd="@dimen/size_20dp"
+        android:layout_marginBottom="@dimen/size_20dp"
+        android:textSize="22sp" />
+
     <Button
         android:id="@+id/btn_MainMenu"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="MainMenu"
-        android:visibility="gone" />
+        android:visibility="visible" />
 
     <Button
         android:id="@+id/btn_Demo"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="门禁串口Demo" />
+
+    <Button
+        android:id="@+id/btn_temp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="温度检测1" />
+
+    <Button
+        android:id="@+id/btn_uart"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="温度检测2" />
+    <Button
+        android:id="@+id/btn_temp3"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="温度检测3" />
 </LinearLayout>

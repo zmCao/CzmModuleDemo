@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.czm.module_serial_port">
-    <!--android:sharedUserId="android.uid.system">-->
+    <!-- android:sharedUserId="android.uid.system"> -->
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
@@ -13,6 +13,7 @@
         android:supportsRtl="true"
         android:testOnly="false"
         android:theme="@style/AppTheme">
+        <activity android:name=".TestActivity"></activity>
         <activity
             android:name="debug.LauncherActivity"
             android:theme="@style/SplashTheme">
@@ -29,6 +30,9 @@
         <activity android:name=".sample.Sending01010101Activity" />
         <activity android:name=".sample.SerialPortPreferences" />
         <activity android:name=".SerialPortDemoActivity" />
+        <activity android:name=".TempActivity" />
+        <activity android:name=".Temp2Activity" />
+        <activity android:name=".Temp3Activity" />
     </application>
 
 </manifest>

@@ -1,0 +1,239 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        android:orientation="vertical"
+        android:padding="20dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="@dimen/size_80dp"
+                android:layout_height="wrap_content"
+                android:text="串口:"
+                android:textColor="@color/black"
+                android:textSize="@dimen/text_size_16sp" />
+
+            <EditText
+                android:id="@+id/edt_ck"
+                android:layout_width="@dimen/size_80dp"
+                android:layout_height="wrap_content"
+                android:text="ttyS3"
+                android:textSize="@dimen/text_size_16sp" />
+
+            <TextView
+                android:layout_width="@dimen/size_80dp"
+                android:layout_height="wrap_content"
+                android:text="波特率:"
+                android:textColor="@color/black"
+                android:textSize="@dimen/text_size_16sp" />
+
+            <EditText
+                android:id="@+id/edt_btl"
+                android:layout_width="@dimen/size_80dp"
+                android:layout_height="wrap_content"
+                android:text="115200"
+                android:textSize="@dimen/text_size_16sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="@dimen/size_80dp"
+                android:layout_height="wrap_content"
+                android:text="环境温度："
+                android:textColor="@color/black"
+                android:textSize="@dimen/text_size_16sp" />
+
+            <EditText
+                android:id="@+id/edt_hjxs"
+                android:layout_width="@dimen/size_80dp"
+                android:layout_height="wrap_content"
+                android:inputType="numberDecimal"
+                android:text="0"
+                android:textSize="@dimen/text_size_16sp" />
+
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="距离补偿："
+            android:textColor="@color/black"
+            android:textSize="@dimen/text_size_16sp" />
+
+        <RadioGroup
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <RadioButton
+                android:id="@+id/rBtn_10cm"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/size_50dp"
+
+                android:text="10cm" />
+
+            <RadioButton
+                android:id="@+id/rBtn_20cm"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/size_50dp"
+                android:text="20cm" />
+
+            <RadioButton
+                android:id="@+id/rBtn_30cm"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/size_50dp"
+                android:text="30cm" />
+
+            <RadioButton
+                android:id="@+id/rBtn_40cm"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/size_50dp"
+                android:text="40cm" />
+
+            <RadioButton
+                android:id="@+id/rBtn_50cm"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/size_50dp"
+                android:checked="true"
+                android:text="50cm" />
+        </RadioGroup>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="取值中心区域面积：(整个面积32*32)"
+            android:textColor="@color/black"
+            android:textSize="@dimen/text_size_16sp" />
+
+        <RadioGroup
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <RadioButton
+                android:id="@+id/rBtn_2020"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/size_50dp"
+                android:checked="true"
+                android:text="20*20" />
+
+            <RadioButton
+                android:id="@+id/rBtn_1818"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/size_50dp"
+                android:text="18*18" />
+
+            <RadioButton
+                android:id="@+id/rBtn_1616"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/size_50dp"
+                android:text="16*16" />
+
+            <RadioButton
+                android:id="@+id/rBtn_1414"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/size_50dp"
+                android:text="14*14" />
+
+            <RadioButton
+                android:id="@+id/rBtn_1212"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/size_50dp"
+                android:text="12*12" />
+        </RadioGroup>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="n个最高温数平均值："
+            android:textColor="@color/black"
+            android:textSize="@dimen/text_size_16sp" />
+
+        <RadioGroup
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <RadioButton
+                android:id="@+id/rBtn_5"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/size_50dp"
+                android:checked="true"
+                android:text="5个" />
+
+            <RadioButton
+                android:id="@+id/rBtn_20"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/size_50dp"
+                android:text="20个" />
+
+            <RadioButton
+                android:id="@+id/rBtn_50"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/size_50dp"
+                android:text="50个" />
+
+            <RadioButton
+                android:id="@+id/rBtn_all"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/size_50dp"
+                android:text="全部" />
+        </RadioGroup>
+
+        <Button
+            android:id="@+id/main_recive_b"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="开启接收" />
+
+        <Button
+            android:id="@+id/main_stop_b"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="停止接收" />
+
+
+        <Button
+            android:id="@+id/main_send_b"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="发送" />
+
+        <Button
+            android:id="@+id/main_send_b_loop"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="3秒循环发送" />
+
+        <Button
+            android:id="@+id/btn_clean"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="清除接收内容"
+            android:visibility="gone" />
+
+        <TextView
+            android:id="@+id/main_recive_tv"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="@dimen/size_10dp"
+            android:hint="接收的内容"
+            android:minHeight="@dimen/size_100dp"
+            android:textSize="12sp" />
+
+    </LinearLayout>
+</ScrollView>
