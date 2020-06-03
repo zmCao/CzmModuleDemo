@@ -20,6 +20,7 @@
         </activity>
         <activity android:name="com.czm.module_audio_video.VideoLearnActivity" />
         <activity android:name="com.czm.module_audio_video.VideoStreamingActivity"/>
+        <activity android:name="com.czm.module_audio_video.HIKVisionActivity"/>
     </application>
 
 </manifest>

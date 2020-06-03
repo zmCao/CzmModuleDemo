@@ -38,7 +38,11 @@ android {
             }
         }
     }
-
+    repositories {
+        flatDir {
+            dirs 'libs'
+        }
+    }
     buildTypes {
         release {
             minifyEnabled false

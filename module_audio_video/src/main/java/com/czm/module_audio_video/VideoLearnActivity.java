@@ -16,13 +16,16 @@ import com.czm.module.module_audio_video.R;
 @Route(path = "/module_audio_video/VideoLearnActivity")
 public class VideoLearnActivity extends BaseActivity implements View.OnClickListener {
     private Button btn_video_streaming;
-
+    private Button btn_hkv;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_video_learn);
         btn_video_streaming = findViewById(R.id.btn_video_streaming);
         btn_video_streaming.setOnClickListener(this);
+
+        btn_hkv=findViewById(R.id.btn_hkv);
+        btn_hkv.setOnClickListener(this);
     }
 
     @Override
@@ -30,6 +33,9 @@ public class VideoLearnActivity extends BaseActivity implements View.OnClickList
         int id = v.getId();
         if (id == R.id.btn_video_streaming) {
             gotoActivity(VideoStreamingActivity.class);
+        }else if(id==R.id.btn_hkv)
+        {
+
         }
     }
 }

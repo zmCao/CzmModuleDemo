@@ -12,4 +12,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="视频推流" />
+
+    <Button
+        android:id="@+id/btn_hkv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="海康摄像头" />
 </LinearLayout>

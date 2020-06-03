@@ -60,7 +60,7 @@ public class SerialPortLearnActivity extends BaseActivity {
         });
 
         TextView txtMac = findViewById(R.id.txt_mac);
-        txtMac.setText("MAC:" + MobileUtil.getMacAddress(Utils.getContext()));
+        txtMac.setText("以太网MAC:" + MobileUtil.getMacEth0(Utils.getContext()));
         TextView txt_wifi_mac = findViewById(R.id.txt_wifi_mac);
         txt_wifi_mac.setText("wifi_MAC:" + MobileUtil.getMacWlan0(Utils.getContext()));
     }

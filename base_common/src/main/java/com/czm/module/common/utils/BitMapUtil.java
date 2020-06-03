@@ -2,6 +2,7 @@ package com.czm.module.common.utils;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.AssetManager;
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.Config;
@@ -14,6 +15,8 @@ import android.graphics.PorterDuffXfermode;
 import android.graphics.RectF;
 import android.media.ExifInterface;
 import android.media.ThumbnailUtils;
+import android.net.Uri;
+import android.provider.MediaStore;
 import android.util.Base64;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -22,6 +25,7 @@ import android.view.ViewGroup.LayoutParams;
 import android.webkit.WebView;
 import android.widget.ListView;
 import android.widget.ScrollView;
+import android.widget.Toast;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -756,5 +760,28 @@ public class BitMapUtil {
         canvas.restore();
         return bitmap;
     }
-
+    /**
+     * //通知相册更新
+     */
+    public static void refreshPhoto(Context mContext, Bitmap b, String Folder, String FileName) {
+        File file = new File(Folder + FileName);
+        MediaStore.Images.Media.insertImage(mContext.getContentResolver(), b, file.toString(), null);
+        Intent intent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
+        Uri uri = Uri.fromFile(file);
+        intent.setData(uri);
+        mContext.sendBroadcast(intent);
+        Toast.makeText(mContext, "图片保存成功", Toast.LENGTH_SHORT).show();
+    }
+    /**
+     * //通知相册更新
+     */
+    public static void refreshPhoto(Context mContext, String Folder, String FileName) {
+        File file = new File(Folder + FileName);
+        MediaStore.Images.Media.insertImage(mContext.getContentResolver(),BitmapFactory.decodeFile(file.getAbsolutePath()), file.toString(), null);
+        Intent intent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
+        Uri uri = Uri.fromFile(file);
+        intent.setData(uri);
+        mContext.sendBroadcast(intent);
+        Toast.makeText(mContext, "图片保存成功", Toast.LENGTH_SHORT).show();
+    }
 }
