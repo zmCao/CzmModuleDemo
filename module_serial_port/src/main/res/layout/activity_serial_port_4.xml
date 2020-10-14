@@ -19,15 +19,15 @@
             <TextView
                 android:layout_width="@dimen/size_100dp"
                 android:layout_height="wrap_content"
-                android:text="串口:"
+                android:text="SerialPort:"
                 android:textColor="@color/black"
-                android:textSize="@dimen/text_size_20sp" />
+                android:textSize="@dimen/text_size_12sp" />
 
             <EditText
                 android:id="@+id/edt_ck"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="ttyS1" />
+                android:text="ttyS3" />
         </LinearLayout>
 
         <LinearLayout
@@ -39,15 +39,15 @@
             <TextView
                 android:layout_width="@dimen/size_100dp"
                 android:layout_height="wrap_content"
-                android:text="波特率:"
+                android:text="BaudRate:"
                 android:textColor="@color/black"
-                android:textSize="@dimen/text_size_20sp" />
+                android:textSize="@dimen/text_size_12sp" />
 
             <EditText
                 android:id="@+id/edt_btl"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="9600" />
+                android:text="115200" />
         </LinearLayout>
 
         <LinearLayout
@@ -59,9 +59,9 @@
             <TextView
                 android:layout_width="@dimen/size_100dp"
                 android:layout_height="wrap_content"
-                android:text="发送内容："
+                android:text="SendCommand："
                 android:textColor="@color/black"
-                android:textSize="@dimen/text_size_20sp" />
+                android:textSize="@dimen/text_size_12sp" />
 
             <EditText
                 android:id="@+id/main_send_et"
@@ -74,21 +74,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/size_10dp"
-            android:orientation="horizontal">
-
-            <TextView
-                android:layout_width="@dimen/size_100dp"
-                android:layout_height="wrap_content"
-                android:text="系数："
-                android:textColor="@color/black"
-                android:textSize="@dimen/text_size_20sp" />
-
-            <EditText
-                android:id="@+id/edt_jlxs"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="1" />
-        </LinearLayout>
+            android:orientation="horizontal"/>
 
         <RadioGroup
             android:layout_width="match_parent"
@@ -101,7 +87,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="@dimen/size_50dp"
                 android:layout_marginLeft="@dimen/size_10dp"
-                android:text="字符" />
+                android:text="String" />
 
             <RadioButton
                 android:id="@+id/rBtn_hex"
@@ -115,26 +101,26 @@
             android:id="@+id/main_send_b"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="发送" />
+            android:text="Send" />
 
         <Button
             android:id="@+id/main_send_b_loop"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="3秒循环发送" />
+            android:text="Send in a 3-second loop" />
 
         <Button
             android:id="@+id/btn_clean"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="清除接收内容" />
+            android:text="Clear received content" />
 
         <TextView
             android:id="@+id/main_recive_tv"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginTop="@dimen/size_10dp"
-            android:hint="接收的内容"
+            android:hint="Content received"
             android:minHeight="@dimen/size_100dp"
             android:textSize="@dimen/text_size_22sp" />
 
@@ -142,13 +128,13 @@
             android:id="@+id/main_recive_b"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="开启接收" />
+            android:text="Open Received" />
 
         <Button
             android:id="@+id/main_stop_b"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="停止接收" />
+            android:text="Start Received" />
 
     </LinearLayout>
 </ScrollView>

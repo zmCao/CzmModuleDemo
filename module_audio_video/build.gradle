@@ -55,4 +55,7 @@ dependencies {
     implementation 'com.android.support.constraint:constraint-layout:1.1.3'
     annotationProcessor deps.arouter_compiler
     implementation project(':base_common')
+    configurations {
+        all*.exclude group: 'org.simpleframework.xml.Attribute'
+    }
 }

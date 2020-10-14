@@ -33,6 +33,8 @@
         <activity android:name=".TempActivity" />
         <activity android:name=".Temp2Activity" />
         <activity android:name=".Temp3Activity" />
+        <activity android:name=".Temp4Activity" />
+
     </application>
 
 </manifest>

@@ -58,6 +58,10 @@ public class SerialPortLearnActivity extends BaseActivity {
         btn_temp3.setOnClickListener(v -> {
             gotoActivity(Temp3Activity.class);
         });
+        Button btn_temp4 = findViewById(R.id.btn_temp4);
+        btn_temp4.setOnClickListener(v -> {
+            gotoActivity(Temp4Activity.class);
+        });
 
         TextView txtMac = findViewById(R.id.txt_mac);
         txtMac.setText("以太网MAC:" + MobileUtil.getMacEth0(Utils.getContext()));
